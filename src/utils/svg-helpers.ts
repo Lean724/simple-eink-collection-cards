@@ -1,0 +1,79 @@
+import { svg, SVGTemplateResult } from 'lit';
+
+export interface DataPoint {
+  value: number;
+  time?: number;
+}
+
+export function renderSparklineSVG(
+  points: number[],
+  chartType: 'bars' | 'line' = 'bars',
+  width = 300,
+  height = 60,
+  color = 'currentColor'
+): SVGTemplateResult {
+  if (!points || points.length === 0) {
+    return svg`<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"></svg>`;
+  }
+
+  const min = Math.min(...points);
+  const max = Math.max(...points);
+  const range = max === min ? 1 : max - min;
+  const paddingY = 4;
+  const usableHeight = height - paddingY * 2;
+
+  if (chartType === 'bars') {
+    const barCount = points.length;
+    const gap = 2;
+    const totalGap = gap * (barCount - 1);
+    const barWidth = Math.max(2, Math.floor((width - totalGap) / barCount));
+
+    return svg`
+      <svg
+        width="100%"
+        height="${height}"
+        viewBox="0 0 ${width} ${height}"
+        preserveAspectRatio="none"
+        shape-rendering="crispEdges"
+        style="display: block; overflow: visible;"
+      >
+        ${points.map((val, idx) => {
+          const normalized = (val - min) / range;
+          const barH = Math.max(2, Math.round(normalized * usableHeight));
+          const x = idx * (barWidth + gap);
+          const y = height - paddingY - barH;
+          return svg`<rect x="${x}" y="${y}" width="${barWidth}" height="${barH}" fill="${color}" />`;
+        })}
+      </svg>
+    `;
+  }
+
+  // chartType === 'line'
+  const stepX = width / Math.max(1, points.length - 1);
+  const pathCoords = points.map((val, idx) => {
+    const normalized = (val - min) / range;
+    const x = Math.round(idx * stepX);
+    const y = Math.round(height - paddingY - normalized * usableHeight);
+    return `${x},${y}`;
+  });
+
+  return svg`
+    <svg
+      width="100%"
+      height="${height}"
+      viewBox="0 0 ${width} ${height}"
+      preserveAspectRatio="none"
+      shape-rendering="geometricPrecision"
+      style="display: block; overflow: visible;"
+    >
+      <polyline
+        fill="none"
+        stroke="${color}"
+        stroke-width="2.5"
+        stroke-linecap="square"
+        stroke-linejoin="miter"
+        points="${pathCoords.join(' ')}"
+      />
+    </svg>
+  `;
+}

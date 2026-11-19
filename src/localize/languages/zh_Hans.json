@@ -1,0 +1,150 @@
+{
+  "common": {
+    "title": "标题",
+    "inverted": "反色显示（黑底白字）",
+    "entity": "实体",
+    "attribute": "属性（可选）",
+    "name": "自定义名称（可选）",
+    "unit": "自定义单位（可选）",
+    "icon": "自定义图标（可选）",
+    "value": "数值",
+    "condition": "条件",
+    "optional": "可选",
+    "none": "无",
+    "active": "激活",
+    "inactive": "未激活",
+    "open": "开启",
+    "closed": "关闭",
+    "on": "开",
+    "off": "关",
+    "loading": "加载中...",
+    "no_events": "近期无日程",
+    "no_data": "暂无数据",
+    "not_configured": "卡片未配置，请选择实体。"
+  },
+  "conditions": {
+    "equals": "等于",
+    "not_equals": "不等于",
+    "above": "大于 (>)",
+    "below": "小于 (<)",
+    "on": "状态为 开 / 开启",
+    "off": "状态为 关 / 关闭"
+  },
+  "hero_metric": {
+    "name": "E-ink 核心指标卡片",
+    "description": "超大字体高对比度显示单项核心指标，可选趋势增量显示。",
+    "show_trend": "显示趋势 / 增量",
+    "trend_value": "趋势文本（例如 +1.2° 或 ▲ 5%）"
+  },
+  "grid_metrics": {
+    "name": "E-ink 网格指标卡片",
+    "description": "以严谨的实体网格对比 2 到 4 项相关指标。",
+    "columns": "列数 (2, 3 或 4)"
+  },
+  "status_list": {
+    "name": "E-ink 状态列表卡片",
+    "description": "以高对比度单色徽章显示二元或离散设备状态。",
+    "invert_when_active": "激活时反色徽章（黑底白字）"
+  },
+  "alert_banner": {
+    "name": "E-ink 告警横幅卡片",
+    "description": "高对比度条件报警块，无报警时自动隐藏。",
+    "message": "告警内容",
+    "message_placeholder": "警告：检测到异常或紧急状态！"
+  },
+  "sparkline_bar": {
+    "name": "E-ink 迷你走势卡片",
+    "description": "清晰的 12/24 小时历史趋势柱状图或实线，无模糊抗锯齿。",
+    "hours_to_show": "显示小时数（如 12, 24）",
+    "chart_type": "图表样式",
+    "chart_bars": "离散垂直柱状图",
+    "chart_line": "实线走势图"
+  },
+  "schedule_agenda": {
+    "name": "E-ink 日程安排卡片",
+    "description": "紧凑的时间顺序日程列表，以 1px 实线分割。",
+    "max_items": "最多显示事件数"
+  },
+  "time": {
+    "name": "E-ink 时钟与日期卡片",
+    "description": "分钟级精准同步电子墨水时钟，无秒针刷新残影。",
+    "time_format": "时间格式",
+    "show_date": "显示日期",
+    "date_format": "日期样式",
+    "date_short": "简短日期 (年/月/日)",
+    "date_long": "完整日期 (星期 + 月 + 日)",
+    "date_combined": "组合模式 (星期 + 简短日期)",
+    "timezone": "自定义时区 (如 Asia/Shanghai)",
+    "secondary_entity_1": "次要实体 1",
+    "secondary_entity_2": "次要实体 2"
+  },
+  "forecast": {
+    "name": "E-ink 天气预报卡片",
+    "description": "天气状态、气温、未来多日预报及额外指标槽位。",
+    "days_to_show": "预报天数",
+    "extra_attribute": "额外指标",
+    "extra_humidity": "湿度 (%)",
+    "extra_pressure": "气压 (hPa)",
+    "extra_wind_speed": "风速",
+    "extra_precipitation": "降水概率 (%)"
+  },
+  "weather": {
+    "clear_night": "晴朗夜晚",
+    "cloudy": "阴天",
+    "fog": "雾",
+    "hail": "冰雹",
+    "lightning": "雷阵雨",
+    "lightning_rainy": "雷阵雨伴降水",
+    "partlycloudy": "多云",
+    "pouring": "大雨",
+    "rainy": "小雨",
+    "snowy": "下雪",
+    "snowy_rainy": "雨夹雪",
+    "sunny": "晴天",
+    "windy": "有风",
+    "windy_variant": "大风",
+    "exceptional": "恶劣天气"
+  },
+  "days": {
+    "sun": "周日",
+    "mon": "周一",
+    "tue": "周二",
+    "wed": "周三",
+    "thu": "周四",
+    "fri": "周五",
+    "sat": "周六",
+    "sunday": "星期日",
+    "monday": "星期一",
+    "tuesday": "星期二",
+    "wednesday": "星期三",
+    "thursday": "星期四",
+    "friday": "星期五",
+    "saturday": "星期六"
+  },
+  "months": {
+    "jan": "1月",
+    "feb": "2月",
+    "mar": "3月",
+    "apr": "4月",
+    "may": "5月",
+    "jun": "6月",
+    "jul": "7月",
+    "aug": "8月",
+    "sep": "9月",
+    "oct": "10月",
+    "nov": "11月",
+    "dec": "12月",
+    "january": "一月",
+    "february": "二月",
+    "march": "三月",
+    "april": "四月",
+    "may_long": "五月",
+    "june": "六月",
+    "july": "七月",
+    "august": "八月",
+    "september": "九月",
+    "october": "十月",
+    "november": "十一月",
+    "december": "十二月"
+  }
+}

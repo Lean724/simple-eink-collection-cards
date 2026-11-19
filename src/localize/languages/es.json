@@ -1,0 +1,150 @@
+{
+  "common": {
+    "title": "Título",
+    "inverted": "Invertido (Fondo negro, texto blanco)",
+    "entity": "Entidad",
+    "attribute": "Atributo (opcional)",
+    "name": "Nombre personalizado (opcional)",
+    "unit": "Unidad personalizada (opcional)",
+    "icon": "Ícono personalizado (opcional)",
+    "value": "Valor",
+    "condition": "Condición",
+    "optional": "Opcional",
+    "none": "Ninguno",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "open": "Abierto",
+    "closed": "Cerrado",
+    "on": "ON",
+    "off": "OFF",
+    "loading": "Cargando...",
+    "no_events": "Sin eventos próximos",
+    "no_data": "Sin datos disponibles",
+    "not_configured": "Tarjeta no configurada. Por favor selecciona una entidad."
+  },
+  "conditions": {
+    "equals": "Es igual a",
+    "not_equals": "No es igual a",
+    "above": "Mayor que (>)",
+    "below": "Menor que (<)",
+    "on": "Estado es ON / Activo",
+    "off": "Estado es OFF / Inactivo"
+  },
+  "hero_metric": {
+    "name": "E-ink Métrica Protagonista",
+    "description": "Muestra un valor individual de gran escala con alto contraste y delta de tendencia opcional.",
+    "show_trend": "Mostrar tendencia / Delta",
+    "trend_value": "Texto de tendencia (ej. +1.2° o ▲ 5%)"
+  },
+  "grid_metrics": {
+    "name": "E-ink Grilla de Métricas",
+    "description": "De 2 a 4 métricas relacionadas en una grilla estricta con divisores sólidos.",
+    "columns": "Columnas (2, 3 o 4)"
+  },
+  "status_list": {
+    "name": "E-ink Lista de Estados",
+    "description": "Estados binarios o discretos con badges monocromáticos de alto contraste.",
+    "invert_when_active": "Invertir badge al estar activo (Fondo negro, letra blanca)"
+  },
+  "alert_banner": {
+    "name": "E-ink Banner de Alerta",
+    "description": "Bloque de aviso crítico condicional. Oculto si la condición no se cumple.",
+    "message": "Mensaje de alerta",
+    "message_placeholder": "¡Advertencia: condición crítica detectada!"
+  },
+  "sparkline_bar": {
+    "name": "E-ink Barra de Tendencia",
+    "description": "Historial de 12/24h en barras discretas o línea sólida sin difuminados grises.",
+    "hours_to_show": "Horas a mostrar (ej. 12, 24)",
+    "chart_type": "Estilo de gráfico",
+    "chart_bars": "Barras verticales discretas",
+    "chart_line": "Línea continua sólida"
+  },
+  "schedule_agenda": {
+    "name": "E-ink Agenda / Calendario",
+    "description": "Eventos cronológicos compactos separados por líneas sólidas de 1px.",
+    "max_items": "Máximo de eventos a mostrar"
+  },
+  "time": {
+    "name": "E-ink Reloj y Fecha",
+    "description": "Reloj sincronizado al minuto, sin parpadeo de segundos y formato de fecha.",
+    "time_format": "Formato de hora",
+    "show_date": "Mostrar fecha",
+    "date_format": "Estilo de fecha",
+    "date_short": "Fecha corta (DD/MM/AAAA)",
+    "date_long": "Fecha larga (Día de semana + Día + Mes)",
+    "date_combined": "Combinada (Día de semana, Fecha corta)",
+    "timezone": "Zona horaria personalizada (ej. America/Argentina/Buenos_Aires)",
+    "secondary_entity_1": "Entidad secundaria 1",
+    "secondary_entity_2": "Entidad secundaria 2"
+  },
+  "forecast": {
+    "name": "E-ink Clima y Pronóstico",
+    "description": "Estado del clima, temperatura, pronóstico extendido y slot de métrica extra.",
+    "days_to_show": "Días a mostrar en pronóstico",
+    "extra_attribute": "Métrica adicional",
+    "extra_humidity": "Humedad (%)",
+    "extra_pressure": "Presión atmosférica (hPa)",
+    "extra_wind_speed": "Velocidad del viento",
+    "extra_precipitation": "Probabilidad de precipitación (%)"
+  },
+  "weather": {
+    "clear_night": "Despejado",
+    "cloudy": "Nublado",
+    "fog": "Niebla",
+    "hail": "Granizo",
+    "lightning": "Tormenta eléctrica",
+    "lightning_rainy": "Tormenta con lluvia",
+    "partlycloudy": "Parcialmente nublado",
+    "pouring": "Lluvia torrencial",
+    "rainy": "Lluvia",
+    "snowy": "Nieve",
+    "snowy_rainy": "Aguanieve",
+    "sunny": "Soleado",
+    "windy": "Ventoso",
+    "windy_variant": "Ventoso",
+    "exceptional": "Clima severo"
+  },
+  "days": {
+    "sun": "Dom",
+    "mon": "Lun",
+    "tue": "Mar",
+    "wed": "Mié",
+    "thu": "Jue",
+    "fri": "Vie",
+    "sat": "Sáb",
+    "sunday": "Domingo",
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado"
+  },
+  "months": {
+    "jan": "Ene",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Abr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Ago",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dic",
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may_long": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  }
+}

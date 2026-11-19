@@ -1,0 +1,150 @@
+{
+  "common": {
+    "title": "Título",
+    "inverted": "Invertido (Fundo preto, texto branco)",
+    "entity": "Entidade",
+    "attribute": "Atributo (opcional)",
+    "name": "Nome personalizado (opcional)",
+    "unit": "Unidade personalizada (opcional)",
+    "icon": "Ícone personalizado (opcional)",
+    "value": "Valor",
+    "condition": "Condição",
+    "optional": "Opcional",
+    "none": "Nenhum",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "open": "Aberto",
+    "closed": "Fechado",
+    "on": "ON",
+    "off": "OFF",
+    "loading": "A carregar...",
+    "no_events": "Sem eventos próximos",
+    "no_data": "Sem dados disponíveis",
+    "not_configured": "Cartão não configurado. Por favor selecione uma entidade."
+  },
+  "conditions": {
+    "equals": "É igual a",
+    "not_equals": "Não é igual a",
+    "above": "Maior que (>)",
+    "below": "Menor que (<)",
+    "on": "Estado é ON / Ativo",
+    "off": "Estado é OFF / Inativo"
+  },
+  "hero_metric": {
+    "name": "E-ink Métrica Principal",
+    "description": "Exibição de alto contraste de um valor individual com delta de tendência opcional.",
+    "show_trend": "Mostrar tendência / Delta",
+    "trend_value": "Texto de tendência (ex: +1.2° ou ▲ 5%)"
+  },
+  "grid_metrics": {
+    "name": "E-ink Grelha de Métricas",
+    "description": "2 a 4 métricas relacionadas numa grelha rígida com divisores sólidos.",
+    "columns": "Colunas (2, 3 ou 4)"
+  },
+  "status_list": {
+    "name": "E-ink Lista de Estados",
+    "description": "Estados binários ou discretos com badges monocromáticos de alto contraste.",
+    "invert_when_active": "Inverter badge quando ativo (Fundo preto, texto branco)"
+  },
+  "alert_banner": {
+    "name": "E-ink Banner de Alerta",
+    "description": "Bloco de aviso crítico condicional. Oculto quando inativo.",
+    "message": "Mensagem de alerta",
+    "message_placeholder": "Aviso: condição crítica detetada!"
+  },
+  "sparkline_bar": {
+    "name": "E-ink Barra de Tendência",
+    "description": "Histórico de 12/24h em barras discretas ou linha sólida sem antialiasing suave.",
+    "hours_to_show": "Horas a apresentar (ex: 12, 24)",
+    "chart_type": "Estilo de gráfico",
+    "chart_bars": "Barras verticais discretas",
+    "chart_line": "Linha contínua sólida"
+  },
+  "schedule_agenda": {
+    "name": "E-ink Agenda / Calendário",
+    "description": "Eventos cronológicos compactos separados por linhas sólidas de 1px.",
+    "max_items": "Máximo de eventos a apresentar"
+  },
+  "time": {
+    "name": "E-ink Relógio e Data",
+    "description": "Relógio e-ink sincronizado ao minuto sem cintilação de segundos.",
+    "time_format": "Formato de hora",
+    "show_date": "Mostrar data",
+    "date_format": "Estilo de data",
+    "date_short": "Data curta (DD/MM/AAAA)",
+    "date_long": "Data longa (Dia da semana + Dia + Mês)",
+    "date_combined": "Combinada (Dia da semana, Data curta)",
+    "timezone": "Fuso horário personalizado (ex: Europe/Lisbon)",
+    "secondary_entity_1": "Entidade secundária 1",
+    "secondary_entity_2": "Entidade secundária 2"
+  },
+  "forecast": {
+    "name": "E-ink Meteorologia e Previsão",
+    "description": "Estado do tempo, temperatura, previsão alargada e atributo adicional.",
+    "days_to_show": "Dias de previsão",
+    "extra_attribute": "Métrica adicional",
+    "extra_humidity": "Humidade (%)",
+    "extra_pressure": "Pressão atmosférica (hPa)",
+    "extra_wind_speed": "Velocidade do vento",
+    "extra_precipitation": "Probabilidade de precipitação (%)"
+  },
+  "weather": {
+    "clear_night": "Limpo",
+    "cloudy": "Nublado",
+    "fog": "Nevoeiro",
+    "hail": "Granizo",
+    "lightning": "Trovoada",
+    "lightning_rainy": "Trovoada com chuva",
+    "partlycloudy": "Parcialmente nublado",
+    "pouring": "Chuva torrencial",
+    "rainy": "Chuva",
+    "snowy": "Neve",
+    "snowy_rainy": "Água-neve",
+    "sunny": "Ensolarado",
+    "windy": "Ventoso",
+    "windy_variant": "Ventoso",
+    "exceptional": "Tempo severo"
+  },
+  "days": {
+    "sun": "Dom",
+    "mon": "Seg",
+    "tue": "Ter",
+    "wed": "Qua",
+    "thu": "Qui",
+    "fri": "Sex",
+    "sat": "Sáb",
+    "sunday": "Domingo",
+    "monday": "Segunda-feira",
+    "tuesday": "Terça-feira",
+    "wednesday": "Quarta-feira",
+    "thursday": "Quinta-feira",
+    "friday": "Sexta-feira",
+    "saturday": "Sábado"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Fev",
+    "mar": "Mar",
+    "apr": "Abr",
+    "may": "Mai",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Ago",
+    "sep": "Set",
+    "oct": "Out",
+    "nov": "Nov",
+    "dec": "Dez",
+    "january": "Janeiro",
+    "february": "Fevereiro",
+    "march": "Março",
+    "april": "Abril",
+    "may_long": "Maio",
+    "june": "Junho",
+    "july": "Julho",
+    "august": "Agosto",
+    "september": "Setembro",
+    "october": "Outubro",
+    "november": "Novembro",
+    "december": "Dezembro"
+  }
+}

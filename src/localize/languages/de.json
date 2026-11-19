@@ -1,0 +1,150 @@
+{
+  "common": {
+    "title": "Titel",
+    "inverted": "Invertiert (Schwarzer Hintergrund, weiße Schrift)",
+    "entity": "Entität",
+    "attribute": "Attribut (optional)",
+    "name": "Benutzerdefinierter Name (optional)",
+    "unit": "Benutzerdefinierte Einheit (optional)",
+    "icon": "Benutzerdefiniertes Symbol (optional)",
+    "value": "Wert",
+    "condition": "Bedingung",
+    "optional": "Optional",
+    "none": "Keine",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "open": "Offen",
+    "closed": "Geschlossen",
+    "on": "AN",
+    "off": "AUS",
+    "loading": "Wird geladen...",
+    "no_events": "Keine anstehenden Ereignisse",
+    "no_data": "Keine Daten verfügbar",
+    "not_configured": "Karte nicht konfiguriert. Bitte eine Entität auswählen."
+  },
+  "conditions": {
+    "equals": "Ist gleich",
+    "not_equals": "Ist nicht gleich",
+    "above": "Größer als (>)",
+    "below": "Kleiner als (<)",
+    "on": "Status ist AN / Aktiv",
+    "off": "Status ist AUS / Inaktiv"
+  },
+  "hero_metric": {
+    "name": "E-ink Hauptmetrik",
+    "description": "Große Einzelwertanzeige mit starkem Kontrast und optionaler Trendanzeige.",
+    "show_trend": "Trend / Delta anzeigen",
+    "trend_value": "Trendtext (z. B. +1.2° oder ▲ 5%)"
+  },
+  "grid_metrics": {
+    "name": "E-ink Metriken-Raster",
+    "description": "2 bis 4 zusammenhängende Metriken in einem festen Raster mit durchgezogenen Linien.",
+    "columns": "Spalten (2, 3 oder 4)"
+  },
+  "status_list": {
+    "name": "E-ink Statusliste",
+    "description": "Diskrete oder binäre Zustände mit kontrastreichen Monochrom-Badges.",
+    "invert_when_active": "Badge bei Aktivität invertieren (Schwarzer Hintergrund, weiße Schrift)"
+  },
+  "alert_banner": {
+    "name": "E-ink Alarm-Banner",
+    "description": "Kontrastreicher konditionaler Alarmblock. Ausgeblendet, wenn inaktiv.",
+    "message": "Alarmmeldung",
+    "message_placeholder": "Warnung: Kritischer Zustand erkannt!"
+  },
+  "sparkline_bar": {
+    "name": "E-ink Trendbalken",
+    "description": "Präzise 12/24-Stunden-Historie als Balken oder durchgezogene Linie ohne Kantenglättung.",
+    "hours_to_show": "Anzuzeigende Stunden (z. B. 12, 24)",
+    "chart_type": "Diagrammstil",
+    "chart_bars": "Diskrete vertikale Balken",
+    "chart_line": "Durchgezogene Linie"
+  },
+  "schedule_agenda": {
+    "name": "E-ink Terminübersicht",
+    "description": "Kompakte chronologische Terminliste, getrennt durch 1px-Linien.",
+    "max_items": "Maximale Anzahl an Terminen"
+  },
+  "time": {
+    "name": "E-ink Uhrzeit & Datum",
+    "description": "Minutengenau synchronisierte E-Ink-Uhr ohne Sekundenflackern.",
+    "time_format": "Zeitformat",
+    "show_date": "Datum anzeigen",
+    "date_format": "Datumsstil",
+    "date_short": "Kurzes Datum (TT.MM.JJJJ)",
+    "date_long": "Langes Datum (Wochentag + Tag + Monat)",
+    "date_combined": "Kombiniert (Wochentag, kurzes Datum)",
+    "timezone": "Benutzerdefinierte Zeitzone (z. B. Europe/Berlin)",
+    "secondary_entity_1": "Sekundäre Entität 1",
+    "secondary_entity_2": "Sekundäre Entität 2"
+  },
+  "forecast": {
+    "name": "E-ink Wetterbericht",
+    "description": "Wetterlage, Temperatur, Mehrtages-Vorhersage und konfigurierbares Zusatzfeld.",
+    "days_to_show": "Vorhersagetage",
+    "extra_attribute": "Zusatzmetrik",
+    "extra_humidity": "Luftfeuchtigkeit (%)",
+    "extra_pressure": "Luftdruck (hPa)",
+    "extra_wind_speed": "Windgeschwindigkeit",
+    "extra_precipitation": "Niederschlagswahrscheinlichkeit (%)"
+  },
+  "weather": {
+    "clear_night": "Klar",
+    "cloudy": "Bewölkt",
+    "fog": "Nebel",
+    "hail": "Hagel",
+    "lightning": "Gewitter",
+    "lightning_rainy": "Gewitter mit Regen",
+    "partlycloudy": "Teilweise bewölkt",
+    "pouring": "Starker Regen",
+    "rainy": "Regen",
+    "snowy": "Schnee",
+    "snowy_rainy": "Schneeregen",
+    "sunny": "Sonnig",
+    "windy": "Windig",
+    "windy_variant": "Windig",
+    "exceptional": "Unwetter"
+  },
+  "days": {
+    "sun": "So",
+    "mon": "Mo",
+    "tue": "Di",
+    "wed": "Mi",
+    "thu": "Do",
+    "fri": "Fr",
+    "sat": "Sa",
+    "sunday": "Sonntag",
+    "monday": "Montag",
+    "tuesday": "Dienstag",
+    "wednesday": "Mittwoch",
+    "thursday": "Donnerstag",
+    "friday": "Freitag",
+    "saturday": "Samstag"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mär",
+    "apr": "Apr",
+    "may": "Mai",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Okt",
+    "nov": "Nov",
+    "dec": "Dez",
+    "january": "Januar",
+    "february": "Februar",
+    "march": "März",
+    "april": "April",
+    "may_long": "Mai",
+    "june": "Juni",
+    "july": "Juli",
+    "august": "August",
+    "september": "September",
+    "october": "Oktober",
+    "november": "November",
+    "december": "Dezember"
+  }
+}

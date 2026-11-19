@@ -1,0 +1,150 @@
+{
+  "common": {
+    "title": "Title",
+    "inverted": "Inverted (Black background, white text)",
+    "entity": "Entity",
+    "attribute": "Attribute (optional)",
+    "name": "Custom Name (optional)",
+    "unit": "Custom Unit (optional)",
+    "icon": "Custom Icon (optional)",
+    "value": "Value",
+    "condition": "Condition",
+    "optional": "Optional",
+    "none": "None",
+    "active": "Active",
+    "inactive": "Inactive",
+    "open": "Open",
+    "closed": "Closed",
+    "on": "ON",
+    "off": "OFF",
+    "loading": "Loading...",
+    "no_events": "No upcoming events",
+    "no_data": "No data available",
+    "not_configured": "Card not configured. Please select an entity."
+  },
+  "conditions": {
+    "equals": "Equals",
+    "not_equals": "Not equals",
+    "above": "Above (>)",
+    "below": "Below (<)",
+    "on": "State is ON / True",
+    "off": "State is OFF / False"
+  },
+  "hero_metric": {
+    "name": "E-ink Hero Metric",
+    "description": "Large single metric display with high contrast and optional delta trend.",
+    "show_trend": "Show Trend / Delta",
+    "trend_value": "Trend Text (e.g. +1.2° or ▲ 5%)"
+  },
+  "grid_metrics": {
+    "name": "E-ink Grid Metrics",
+    "description": "2 to 4 related metrics in a strict solid grid.",
+    "columns": "Columns (2, 3 or 4)"
+  },
+  "status_list": {
+    "name": "E-ink Status List",
+    "description": "Binary or discrete states with high-contrast monochrome badges.",
+    "invert_when_active": "Invert badge when active (Black background, white text)"
+  },
+  "alert_banner": {
+    "name": "E-ink Alert Banner",
+    "description": "High-contrast conditional alert block. Hidden when inactive.",
+    "message": "Alert message",
+    "message_placeholder": "Warning: critical condition detected!"
+  },
+  "sparkline_bar": {
+    "name": "E-ink Sparkline Bar",
+    "description": "Crisp 12/24h historical trend bars or solid line with zero antialiasing blur.",
+    "hours_to_show": "Hours to display (e.g. 12, 24)",
+    "chart_type": "Chart Style",
+    "chart_bars": "Discrete Vertical Bars",
+    "chart_line": "Solid Line"
+  },
+  "schedule_agenda": {
+    "name": "E-ink Schedule Agenda",
+    "description": "Compact chronological calendar events separated by solid 1px dividers.",
+    "max_items": "Maximum events to show"
+  },
+  "time": {
+    "name": "E-ink Clock & Date",
+    "description": "Minute-synchronized e-ink clock with zero-second ghosting and date formats.",
+    "time_format": "Time Format",
+    "show_date": "Show Date",
+    "date_format": "Date Style",
+    "date_short": "Short Date (DD/MM/YYYY)",
+    "date_long": "Long Date (Weekday + Day + Month)",
+    "date_combined": "Combined (Weekday, Short Date)",
+    "timezone": "Custom Timezone (e.g. America/New_York)",
+    "secondary_entity_1": "Secondary Entity 1",
+    "secondary_entity_2": "Secondary Entity 2"
+  },
+  "forecast": {
+    "name": "E-ink Weather Forecast",
+    "description": "Weather status, temperature, extended forecast and extra metric slot.",
+    "days_to_show": "Days to show in forecast",
+    "extra_attribute": "Extra Metric",
+    "extra_humidity": "Humidity (%)",
+    "extra_pressure": "Atmospheric Pressure (hPa)",
+    "extra_wind_speed": "Wind Speed",
+    "extra_precipitation": "Precipitation Probability (%)"
+  },
+  "weather": {
+    "clear_night": "Clear",
+    "cloudy": "Cloudy",
+    "fog": "Foggy",
+    "hail": "Hail",
+    "lightning": "Thunderstorm",
+    "lightning_rainy": "Thunderstorms with rain",
+    "partlycloudy": "Partly cloudy",
+    "pouring": "Heavy rain",
+    "rainy": "Rain",
+    "snowy": "Snow",
+    "snowy_rainy": "Sleet",
+    "sunny": "Sunny",
+    "windy": "Windy",
+    "windy_variant": "Windy",
+    "exceptional": "Severe weather"
+  },
+  "days": {
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec",
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may_long": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  }
+}

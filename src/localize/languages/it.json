@@ -1,0 +1,150 @@
+{
+  "common": {
+    "title": "Titolo",
+    "inverted": "Invertito (Sfondo nero, testo bianco)",
+    "entity": "Entità",
+    "attribute": "Attributo (opzionale)",
+    "name": "Nome personalizzato (opzionale)",
+    "unit": "Unità personalizzata (opzionale)",
+    "icon": "Icona personalizzata (opzionale)",
+    "value": "Valore",
+    "condition": "Condizione",
+    "optional": "Opzionale",
+    "none": "Nessuno",
+    "active": "Attivo",
+    "inactive": "Inattivo",
+    "open": "Aperto",
+    "closed": "Chiuso",
+    "on": "ON",
+    "off": "OFF",
+    "loading": "Caricamento in corso...",
+    "no_events": "Nessun evento in programma",
+    "no_data": "Nessun dato disponibile",
+    "not_configured": "Scheda non configurata. Seleziona un'entità."
+  },
+  "conditions": {
+    "equals": "È uguale a",
+    "not_equals": "Non è uguale a",
+    "above": "Maggiore di (>)",
+    "below": "Minore di (<)",
+    "on": "Stato è ON / Attivo",
+    "off": "Stato è OFF / Inattivo"
+  },
+  "hero_metric": {
+    "name": "E-ink Metrica Principale",
+    "description": "Visualizzazione ad alto contrasto di un valore singolo con indicatore di tendenza opzionale.",
+    "show_trend": "Mostra tendenza / Variazione",
+    "trend_value": "Testo tendenza (es. +1.2° o ▲ 5%)"
+  },
+  "grid_metrics": {
+    "name": "E-ink Griglia di Metriche",
+    "description": "Da 2 a 4 metriche correlate in una griglia rigida con divisori continui.",
+    "columns": "Colonne (2, 3 o 4)"
+  },
+  "status_list": {
+    "name": "E-ink Lista di Stati",
+    "description": "Stati binari o discreti con badge monocromatici ad alto contrasto.",
+    "invert_when_active": "Inverti badge se attivo (Sfondo nero, testo bianco)"
+  },
+  "alert_banner": {
+    "name": "E-ink Banner di Allerta",
+    "description": "Blocco di notifica condizionale. Nascosto se la condizione non è attiva.",
+    "message": "Messaggio di allerta",
+    "message_placeholder": "Attenzione: rilevata condizione critica!"
+  },
+  "sparkline_bar": {
+    "name": "E-ink Grafico di Tendenza",
+    "description": "Cronologia a barre o a linea continua di 12/24 ore senza antialiasing sfocato.",
+    "hours_to_show": "Ore da visualizzare (es. 12, 24)",
+    "chart_type": "Stile grafico",
+    "chart_bars": "Barre verticali discrete",
+    "chart_line": "Linea continua solida"
+  },
+  "schedule_agenda": {
+    "name": "E-ink Agenda / Eventi",
+    "description": "Eventi cronologici compatti separati da linee continue di 1px.",
+    "max_items": "Numero massimo di eventi"
+  },
+  "time": {
+    "name": "E-ink Orologio e Data",
+    "description": "Orologio e-ink sincronizzato al minuto, senza sfarfallio dei secondi.",
+    "time_format": "Formato orario",
+    "show_date": "Mostra data",
+    "date_format": "Stile data",
+    "date_short": "Data breve (GG/MM/AAAA)",
+    "date_long": "Data estesa (Giorno della settimana + Giorno + Mese)",
+    "date_combined": "Combinata (Giorno settimana, Data breve)",
+    "timezone": "Fuso orario personalizzato (es. Europe/Rome)",
+    "secondary_entity_1": "Entità secondaria 1",
+    "secondary_entity_2": "Entità secondaria 2"
+  },
+  "forecast": {
+    "name": "E-ink Previsioni Meteo",
+    "description": "Meteo attuale, temperatura, previsioni estese e slot per metrica extra.",
+    "days_to_show": "Giorni di previsione",
+    "extra_attribute": "Metrica aggiuntiva",
+    "extra_humidity": "Umidità (%)",
+    "extra_pressure": "Pressione atmosferica (hPa)",
+    "extra_wind_speed": "Velocità del vento",
+    "extra_precipitation": "Probabilità di precipitazioni (%)"
+  },
+  "weather": {
+    "clear_night": "Sereno",
+    "cloudy": "Nuvoloso",
+    "fog": "Nebbia",
+    "hail": "Grandine",
+    "lightning": "Temporale",
+    "lightning_rainy": "Temporale con pioggia",
+    "partlycloudy": "Parzialmente nuvoloso",
+    "pouring": "Pioggia battente",
+    "rainy": "Pioggia",
+    "snowy": "Neve",
+    "snowy_rainy": "Nevischio",
+    "sunny": "Soleggiato",
+    "windy": "Ventoso",
+    "windy_variant": "Ventoso",
+    "exceptional": "Condizioni estreme"
+  },
+  "days": {
+    "sun": "Dom",
+    "mon": "Lun",
+    "tue": "Mar",
+    "wed": "Mer",
+    "thu": "Gio",
+    "fri": "Ven",
+    "sat": "Sab",
+    "sunday": "Domenica",
+    "monday": "Lunedì",
+    "tuesday": "Martedì",
+    "wednesday": "Mercoledì",
+    "thursday": "Giovedì",
+    "friday": "Venerdì",
+    "saturday": "Sabato"
+  },
+  "months": {
+    "jan": "Gen",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "Mag",
+    "jun": "Giu",
+    "jul": "Lug",
+    "aug": "Ago",
+    "sep": "Set",
+    "oct": "Ott",
+    "nov": "Nov",
+    "dec": "Dic",
+    "january": "Gennaio",
+    "february": "Febbraio",
+    "march": "Marzo",
+    "april": "Aprile",
+    "may_long": "Maggio",
+    "june": "Giugno",
+    "july": "Luglio",
+    "august": "Agosto",
+    "september": "Settembre",
+    "october": "Ottobre",
+    "november": "Novembre",
+    "december": "Dicembre"
+  }
+}
