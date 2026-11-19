@@ -76,7 +76,7 @@ export class EinkStatusListCard extends BaseEinkCard<StatusListCardConfig> {
     if (items.length === 0) {
       return html`
         <div class="eink-card">
-          ${this.config.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
+          ${this.config?.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
           <div>${this.t('common.not_configured')}</div>
         </div>
       `;
@@ -84,7 +84,7 @@ export class EinkStatusListCard extends BaseEinkCard<StatusListCardConfig> {
 
     return html`
       <div class="eink-card">
-        ${this.config.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
+        ${this.config?.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
         <div class="status-list">
           ${items.map(item => {
             const ent = this.getEntity(item.entity);

@@ -63,7 +63,8 @@
   "schedule_agenda": {
     "name": "E-ink Terminübersicht",
     "description": "Kompakte chronologische Terminliste, getrennt durch 1px-Linien.",
-    "max_items": "Maximale Anzahl an Terminen"
+    "max_items": "Maximale Anzahl an Terminen",
+    "all_day": "Ganztägig"
   },
   "time": {
     "name": "E-ink Uhrzeit & Datum",

@@ -46,6 +46,11 @@ export class EinkAlertBannerEditor extends BaseEditor<AlertBannerCardConfig> {
         name: 'icon',
         label: this.t('common.icon'),
         selector: { icon: {} }
+      },
+      {
+        name: 'inverted',
+        label: this.t('common.inverted'),
+        selector: { boolean: {} }
       }
     ];
   }

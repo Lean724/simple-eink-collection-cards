@@ -63,7 +63,8 @@
   "schedule_agenda": {
     "name": "E-ink Agenda / Calendário",
     "description": "Eventos cronológicos compactos separados por linhas sólidas de 1px.",
-    "max_items": "Máximo de eventos a apresentar"
+    "max_items": "Máximo de eventos a apresentar",
+    "all_day": "Dia todo"
   },
   "time": {
     "name": "E-ink Relógio e Data",

@@ -66,6 +66,8 @@ export class EinkAlertBannerCard extends BaseEinkCard<AlertBannerCardConfig> {
 
   private isConditionMet(): boolean {
     if (!this.config || !this.config.entity) return false;
+    const ent = this.getEntity(this.config.entity);
+    if (!ent) return false;
     const rawState = this.getEntityState(this.config.entity, this.config.attribute);
     const cond = this.config.condition || 'on';
     const targetVal = this.config.value;

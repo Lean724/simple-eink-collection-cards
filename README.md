@@ -1,8 +1,8 @@
 # Simple E-ink Collection Cards
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/default)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/default)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.0.1-green.svg)](package.json)
 
 A cohesive suite of **high-contrast, zero-noise, battery-friendly Lovelace cards** built specifically for **E-ink (E-paper)** screens in Home Assistant.
 
@@ -186,13 +186,17 @@ extra_attribute: humidity # 'humidity', 'pressure', 'wind_speed', or 'precipitat
 
 ### Method 1: HACS (Recommended)
 1. Ensure **HACS** is installed in your Home Assistant instance.
-2. In HACS, open the **Frontend** section.
-3. Click the three dots in the upper right corner and select **Custom repositories**.
-4. Enter the URL of this repository, select category **Dashboard** (or **Lovelace**), and click **Add**.
-5. Find **Simple E-ink Collection Cards**, click **Download**, and reload your dashboard resources when prompted.
+2. Open **HACS** in Home Assistant and search for **Simple E-ink Collection Cards**.
+3. Open the entry, click **Download**, and reload your dashboard resources when prompted.
+
+#### Custom Repository (Fallback)
+If the repository is not yet visible in your HACS catalog:
+1. In **HACS**, click the three dots in the upper right corner and select **Custom repositories**.
+2. Enter the repository URL `https://github.com/Lean724/simple-eink-collection-cards`, select category **Dashboard** (or **Lovelace**), and click **Add**.
+3. Find **Simple E-ink Collection Cards**, click **Download**, and reload your dashboard resources when prompted.
 
 ### Method 2: Manual Installation
-1. Download `simple-eink-collection-cards.js` from the repository root or the [Releases](releases) page.
+1. Download `simple-eink-collection-cards.js` from the repository root or the [Releases](https://github.com/Lean724/simple-eink-collection-cards/releases) page.
 2. Copy `simple-eink-collection-cards.js` into your Home Assistant directory:
    `<config>/www/simple-eink-collection-cards.js`
 3. In Home Assistant, navigate to **Settings** → **Dashboards** → **Resources** (top right menu).

@@ -3,9 +3,11 @@ import { customElement, state } from 'lit/decorators.js';
 import { BaseEinkCard } from './base-eink-card';
 import { ScheduleAgendaCardConfig } from '../types';
 
+type CalendarEventDate = string | { dateTime?: string; date?: string };
+
 interface CalendarEventItem {
-  start: string;
-  end?: string;
+  start?: CalendarEventDate;
+  end?: CalendarEventDate;
   summary: string;
   description?: string;
   location?: string;
@@ -17,6 +19,9 @@ export class EinkScheduleAgendaCard extends BaseEinkCard<ScheduleAgendaCardConfi
   private events: CalendarEventItem[] = [];
 
   private lastFetchTime = 0;
+  private lastFetchedEntity?: string;
+  private isFetching = false;
+  private fetchToken = 0;
 
   public static styles = [
     ...BaseEinkCard.styles,
@@ -86,7 +91,21 @@ export class EinkScheduleAgendaCard extends BaseEinkCard<ScheduleAgendaCardConfi
   }
 
   public getCardSize(): number {
-    return Math.max(1, this.events.length);
+    return Math.max(1, Math.min(this.events.length, this.config?.max_items || 5));
+  }
+
+  public connectedCallback(): void {
+    super.connectedCallback();
+    this.fetchEventsIfNeeded();
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.isFetching) {
+      this.lastFetchTime = 0;
+    }
+    this.fetchToken++;
+    this.isFetching = false;
   }
 
   protected updated(changedProps: PropertyValues): void {
@@ -97,70 +116,115 @@ export class EinkScheduleAgendaCard extends BaseEinkCard<ScheduleAgendaCardConfi
   }
 
   private async fetchEventsIfNeeded(): Promise<void> {
-    if (!this.hass || !this.config?.entity) return;
-
-    const now = Date.now();
-    // Cache events for at least 5 minutes
-    if (now - this.lastFetchTime < 300000 && this.events.length > 0) {
+    const entityId = this.config?.entity;
+    if (!this.isConnected || !this.hass?.callApi || !entityId) {
+      if (!entityId && (this.events.length > 0 || this.lastFetchedEntity)) {
+        this.events = [];
+        this.lastFetchedEntity = undefined;
+        this.lastFetchTime = 0;
+        this.fetchToken++;
+        this.isFetching = false;
+      }
       return;
     }
-    this.lastFetchTime = now;
 
-    const start = new Date().toISOString();
+    const entityChanged = this.lastFetchedEntity !== entityId;
+    if (entityChanged) {
+      this.fetchToken++;
+      this.events = [];
+      this.lastFetchTime = 0;
+      this.isFetching = false;
+    }
+
+    const now = Date.now();
+    // Cache events for at least 5 minutes regardless of whether events are empty or errored
+    if (
+      !entityChanged &&
+      (this.isFetching || (this.lastFetchTime > 0 && now - this.lastFetchTime < 300000))
+    ) {
+      return;
+    }
+
+    this.lastFetchedEntity = entityId;
+    this.lastFetchTime = now;
+    this.isFetching = true;
+    const token = ++this.fetchToken;
+
+    const start = new Date(now).toISOString();
     const end = new Date(now + 7 * 86400 * 1000).toISOString();
 
     try {
-      if (this.hass.callWS) {
-        const res = await this.hass.callWS<{ [key: string]: { events: CalendarEventItem[] } }>({
-          type: 'calendar/get_events',
-          entity_id: this.config.entity,
-          start_date_time: start,
-          end_date_time: end
-        });
-
-        if (res && res[this.config.entity]?.events) {
-          const max = this.config.max_items || 5;
-          this.events = res[this.config.entity].events.slice(0, max);
-          return;
-        }
-      }
-
-      if (this.hass.callApi) {
-        const events = await this.hass.callApi<CalendarEventItem[]>(
-          'GET',
-          `calendars/${this.config.entity}?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`
-        );
-        if (Array.isArray(events)) {
-          const max = this.config.max_items || 5;
-          this.events = events.slice(0, max);
+      const events = await this.hass.callApi<CalendarEventItem[]>(
+        'GET',
+        `calendars/${encodeURIComponent(entityId)}?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`
+      );
+      if (token === this.fetchToken && Array.isArray(events)) {
+        if (JSON.stringify(events) !== JSON.stringify(this.events)) {
+          this.events = events;
         }
       }
     } catch {
-      // Keep existing events or empty
+      // Keep existing events or empty; lastFetchTime prevents refetching on every hass update
+    } finally {
+      if (token === this.fetchToken) {
+        this.isFetching = false;
+      }
     }
   }
 
-  private formatEventTime(isoDateString?: string): string {
-    if (!isoDateString) return '--:--';
-    const date = new Date(isoDateString);
-    if (isNaN(date.getTime())) return isoDateString;
+  private extractStartInfo(eventStart?: CalendarEventDate): { rawStr?: string; isDateOnly: boolean } {
+    if (!eventStart) return { isDateOnly: false };
+    if (typeof eventStart === 'string') {
+      return { rawStr: eventStart, isDateOnly: /^\d{4}-\d{2}-\d{2}$/.test(eventStart) };
+    }
+    if (eventStart.dateTime) {
+      return { rawStr: eventStart.dateTime, isDateOnly: false };
+    }
+    if (eventStart.date) {
+      return { rawStr: eventStart.date, isDateOnly: true };
+    }
+    return { isDateOnly: false };
+  }
+
+  private isSameLocalDay(a: Date, b: Date): boolean {
+    return (
+      a.getDate() === b.getDate() &&
+      a.getMonth() === b.getMonth() &&
+      a.getFullYear() === b.getFullYear()
+    );
+  }
+
+  private formatEventTime(eventStart?: CalendarEventDate): string {
+    const { rawStr, isDateOnly } = this.extractStartInfo(eventStart);
+    if (!rawStr) return '--:--';
 
     const now = new Date();
-    const isToday =
-      date.getDate() === now.getDate() &&
-      date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear();
+    const pad = (n: number) => n.toString().padStart(2, '0');
 
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    if (isDateOnly) {
+      const dateOnlyMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(rawStr);
+      const date = dateOnlyMatch
+        ? new Date(Number(dateOnlyMatch[1]), Number(dateOnlyMatch[2]) - 1, Number(dateOnlyMatch[3]))
+        : new Date(rawStr);
+      if (isNaN(date.getTime())) return rawStr;
 
-    if (isToday) {
+      if (this.isSameLocalDay(date, now)) {
+        return this.t('schedule_agenda.all_day');
+      }
+      return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}`;
+    }
+
+    const date = new Date(rawStr);
+    if (isNaN(date.getTime())) return rawStr;
+
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    if (this.isSameLocalDay(date, now)) {
       return `${hours}:${minutes}`;
     }
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    return `${day}/${month} ${hours}:${minutes}`;
+    return `${pad(date.getDate())}/${pad(date.getMonth() + 1)} ${hours}:${minutes}`;
   }
 
   protected render(): TemplateResult {
@@ -174,14 +238,16 @@ export class EinkScheduleAgendaCard extends BaseEinkCard<ScheduleAgendaCardConfi
     }
 
     const title = this.config.title || this.t('schedule_agenda.name');
+    const max = this.config.max_items || 5;
+    const visibleEvents = this.events.slice(0, max);
 
     return html`
       <div class="eink-card">
         <div class="eink-title">${title}</div>
         <div class="agenda-list">
-          ${this.events.length === 0
+          ${visibleEvents.length === 0
             ? html`<div class="empty-state">${this.t('common.no_events')}</div>`
-            : this.events.map(
+            : visibleEvents.map(
                 ev => html`
                   <div class="agenda-row">
                     <span class="agenda-time tabular">${this.formatEventTime(ev.start)}</span>

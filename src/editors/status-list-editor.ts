@@ -1,33 +1,71 @@
 import { customElement } from 'lit/decorators.js';
 import { BaseEditor } from './base-editor';
-import { StatusListCardConfig } from '../types';
+import { StatusListCardConfig, StatusListItem } from '../types';
 
 @customElement('eink-status-list-editor')
 export class EinkStatusListEditor extends BaseEditor<StatusListCardConfig> {
+  protected getFormData(): Record<string, any> {
+    const list = this._config?.entities || [];
+    const data: Record<string, any> = {
+      inverted: Boolean(this._config?.inverted)
+    };
+    if (this._config?.title) {
+      data.title = this._config.title;
+    }
+    for (let i = 0; i < 5; i++) {
+      const idx = i + 1;
+      if (list[i]?.entity) {
+        data[`entity_${idx}`] = list[i].entity;
+      }
+      if (list[i]?.name) {
+        data[`name_${idx}`] = list[i].name;
+      }
+    }
+    return data;
+  }
+
   protected _valueChanged(ev: CustomEvent): void {
-    if (!this._config || !this.hass) return;
+    ev.stopPropagation();
+    if (!this._config || !this.hass || !ev.detail?.value) return;
     const value = ev.detail.value;
+    const prevEntities = this._config.entities || [];
 
-    const entities = [
-      value.entity_1 ? { entity: value.entity_1, name: value.name_1, icon: value.icon_1, invert_when_active: value.invert_1 !== false } : null,
-      value.entity_2 ? { entity: value.entity_2, name: value.name_2, icon: value.icon_2, invert_when_active: value.invert_2 !== false } : null,
-      value.entity_3 ? { entity: value.entity_3, name: value.name_3, icon: value.icon_3, invert_when_active: value.invert_3 !== false } : null,
-      value.entity_4 ? { entity: value.entity_4, name: value.name_4, icon: value.icon_4, invert_when_active: value.invert_4 !== false } : null,
-      value.entity_5 ? { entity: value.entity_5, name: value.name_5, icon: value.icon_5, invert_when_active: value.invert_5 !== false } : null
-    ].filter(Boolean) as any[];
+    const updatedSlots: StatusListItem[] = [];
+    for (let i = 0; i < 5; i++) {
+      const idx = i + 1;
+      const entity = value[`entity_${idx}`];
+      if (!entity) continue;
+      const prev = prevEntities[i];
+      const item: StatusListItem = {
+        ...(prev || {}),
+        entity
+      };
+      const nameVal = value[`name_${idx}`];
+      if (nameVal) {
+        item.name = nameVal;
+      } else {
+        delete item.name;
+      }
+      updatedSlots.push(item);
+    }
 
-    this._config = {
+    const nextConfig: StatusListCardConfig = {
       ...this._config,
-      title: value.title,
-      inverted: value.inverted,
-      entities: entities.length > 0 ? entities : this._config.entities || []
+      inverted: Boolean(value.inverted),
+      entities: [...updatedSlots, ...prevEntities.slice(5)]
     };
 
+    if (value.title) {
+      nextConfig.title = value.title;
+    } else {
+      delete nextConfig.title;
+    }
+
+    this._config = nextConfig;
     this.fireConfigChanged();
   }
 
   protected getSchema(): any[] {
-    const list = this._config?.entities || [];
     return [
       {
         name: 'title',
@@ -39,59 +77,18 @@ export class EinkStatusListEditor extends BaseEditor<StatusListCardConfig> {
         label: this.t('common.inverted'),
         selector: { boolean: {} }
       },
-      // Item 1
-      {
-        name: 'entity_1',
-        label: `${this.t('common.entity')} 1`,
-        default: list[0]?.entity,
-        selector: { entity: {} }
-      },
-      {
-        name: 'name_1',
-        label: `${this.t('common.name')} 1`,
-        default: list[0]?.name,
-        selector: { text: {} }
-      },
-      // Item 2
-      {
-        name: 'entity_2',
-        label: `${this.t('common.entity')} 2`,
-        default: list[1]?.entity,
-        selector: { entity: {} }
-      },
-      {
-        name: 'name_2',
-        label: `${this.t('common.name')} 2`,
-        default: list[1]?.name,
-        selector: { text: {} }
-      },
-      // Item 3
-      {
-        name: 'entity_3',
-        label: `${this.t('common.entity')} 3`,
-        default: list[2]?.entity,
-        selector: { entity: {} }
-      },
-      {
-        name: 'name_3',
-        label: `${this.t('common.name')} 3`,
-        default: list[2]?.name,
-        selector: { text: {} }
-      },
-      // Item 4
-      {
-        name: 'entity_4',
-        label: `${this.t('common.entity')} 4`,
-        default: list[3]?.entity,
-        selector: { entity: {} }
-      },
-      // Item 5
-      {
-        name: 'entity_5',
-        label: `${this.t('common.entity')} 5`,
-        default: list[4]?.entity,
-        selector: { entity: {} }
-      }
+      ...[1, 2, 3, 4, 5].flatMap(idx => [
+        {
+          name: `entity_${idx}`,
+          label: `${this.t('common.entity')} ${idx}`,
+          selector: { entity: {} }
+        },
+        {
+          name: `name_${idx}`,
+          label: `${this.t('common.name')} ${idx}`,
+          selector: { text: {} }
+        }
+      ])
     ];
   }
 }

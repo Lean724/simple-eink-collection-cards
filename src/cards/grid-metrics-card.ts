@@ -24,9 +24,6 @@ export class EinkGridMetricsCard extends BaseEinkCard<GridMetricsCardConfig> {
         cursor: pointer;
         user-select: none;
       }
-      .grid-cell:nth-child(n) {
-        border-right: 1px solid var(--eink-border-color);
-      }
       .cell-header {
         display: flex;
         align-items: center;
@@ -86,16 +83,18 @@ export class EinkGridMetricsCard extends BaseEinkCard<GridMetricsCardConfig> {
     if (!metrics || metrics.length === 0) {
       return html`
         <div class="eink-card">
-          ${this.config.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
+          ${this.config?.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
           <div class="cell-label">${this.t('grid_metrics.name')}</div>
           <div>${this.t('common.not_configured')}</div>
         </div>
       `;
     }
 
+    const totalRows = Math.ceil(metrics.length / columns);
+
     return html`
       <div class="eink-card">
-        ${this.config.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
+        ${this.config?.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
         <div
           class="grid-container"
           style="grid-template-columns: repeat(${columns}, minmax(0, 1fr));"
@@ -108,12 +107,18 @@ export class EinkGridMetricsCard extends BaseEinkCard<GridMetricsCardConfig> {
             const icon = item.icon || ent?.attributes?.icon;
 
             const isLastInRow = (index + 1) % columns === 0;
-            const borderRight = isLastInRow ? 'border-right: none;' : '';
+            const isLastRow = Math.floor(index / columns) === totalRows - 1;
+            const cellStyle = [
+              isLastInRow ? 'border-right: none;' : '',
+              isLastRow ? 'border-bottom: none;' : ''
+            ]
+              .filter(Boolean)
+              .join(' ');
 
             return html`
               <div
                 class="grid-cell"
-                style="${borderRight}"
+                style="${cellStyle}"
                 @click=${() => this.handleMoreInfo(item.entity)}
               >
                 <div class="cell-header">

@@ -1,3 +1,11 @@
+export interface HassConnection {
+  subscribeMessage: <T>(
+    callback: (msg: T) => void,
+    subscribeMessage: { type: string; [key: string]: any },
+    options?: { resubscribe?: boolean }
+  ) => Promise<() => void | Promise<void>>;
+}
+
 export interface HomeAssistant {
   states: Record<string, HassEntity>;
   language: string;
@@ -9,6 +17,7 @@ export interface HomeAssistant {
   };
   themes?: any;
   localize?: (key: string, ...args: any[]) => string;
+  connection?: HassConnection;
   callWS?: <T>(msg: { type: string; [key: string]: any }) => Promise<T>;
   callApi?: <T>(method: string, path: string, parameters?: any) => Promise<T>;
   callService?: (domain: string, service: string, serviceData?: any) => Promise<any>;
@@ -80,6 +89,8 @@ export interface AlertBannerCardConfig extends EinkBaseConfig {
 export interface SparklineBarCardConfig extends EinkBaseConfig {
   entity: string;
   attribute?: string;
+  name?: string;
+  unit?: string;
   hours_to_show?: number;
   chart_type?: 'bars' | 'line';
   stroke_width?: number;
@@ -118,4 +129,9 @@ export interface ForecastItem {
   humidity?: number;
   pressure?: number;
   wind_speed?: number;
+}
+
+export interface ForecastEvent {
+  type: 'daily' | 'hourly' | 'twice_daily';
+  forecast: ForecastItem[] | null;
 }

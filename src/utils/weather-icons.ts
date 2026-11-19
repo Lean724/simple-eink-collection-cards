@@ -26,6 +26,8 @@ export function getWeatherIcon(condition?: string): string {
 
 export function getWeatherDescription(condition?: string, language = 'en'): string {
   if (!condition) return '';
-  const key = condition.toLowerCase().trim().replace('-', '_');
-  return localize(`weather.${key}`, language) || condition;
+  const subKey = condition.toLowerCase().trim().replace(/-/g, '_');
+  const fullKey = `weather.${subKey}`;
+  const translated = localize(fullKey, language);
+  return translated !== fullKey ? translated : condition;
 }

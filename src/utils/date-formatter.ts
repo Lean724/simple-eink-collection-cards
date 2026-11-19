@@ -9,40 +9,119 @@ const MONTH_LONG_KEYS = [
   'july', 'august', 'september', 'october', 'november', 'december'
 ];
 
-export function formatDate(date: Date, style: 'short' | 'long' | 'combined', language = 'en'): string {
-  const dayOfWeek = date.getDay();
-  const dayOfMonth = date.getDate();
-  const monthIndex = date.getMonth();
-  const year = date.getFullYear();
+const WEEKDAY_MAP: Record<string, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6
+};
+
+interface DateParts {
+  year: number;
+  monthIndex: number;
+  dayOfMonth: number;
+  dayOfWeek: number;
+  hours: number;
+  minutes: number;
+}
+
+function getDateParts(date: Date, timezone?: string): DateParts {
+  if (timezone) {
+    try {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        weekday: 'short',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hourCycle: 'h23'
+      }).formatToParts(date);
+
+      const map: Record<string, string> = {};
+      for (const p of parts) {
+        map[p.type] = p.value;
+      }
+
+      const year = Number(map.year);
+      const month = Number(map.month);
+      const day = Number(map.day);
+      const rawHour = Number(map.hour);
+      const minute = Number(map.minute);
+      const dayOfWeek = WEEKDAY_MAP[map.weekday];
+
+      if (
+        !isNaN(year) &&
+        !isNaN(month) &&
+        !isNaN(day) &&
+        !isNaN(rawHour) &&
+        !isNaN(minute) &&
+        dayOfWeek !== undefined
+      ) {
+        return {
+          year,
+          monthIndex: month - 1,
+          dayOfMonth: day,
+          dayOfWeek,
+          hours: rawHour % 24,
+          minutes: minute
+        };
+      }
+    } catch {
+      // Keep local date if invalid timezone
+    }
+  }
+
+  return {
+    year: date.getFullYear(),
+    monthIndex: date.getMonth(),
+    dayOfMonth: date.getDate(),
+    dayOfWeek: date.getDay(),
+    hours: date.getHours(),
+    minutes: date.getMinutes()
+  };
+}
+
+export function formatDate(
+  date: Date,
+  style: 'short' | 'long' | 'combined',
+  language = 'en',
+  timezone?: string
+): string {
+  const { year, monthIndex, dayOfMonth, dayOfWeek } = getDateParts(date, timezone);
+  const baseLang = (language || 'en').replace('_', '-').split('-')[0].toLowerCase();
 
   const dayShort = localize(`days.${DAY_KEYS[dayOfWeek]}`, language);
   const dayLong = localize(`days.${DAY_LONG_KEYS[dayOfWeek]}`, language);
-  const monthShort = localize(`months.${MONTH_KEYS[monthIndex]}`, language);
   const monthLong = localize(`months.${MONTH_LONG_KEYS[monthIndex]}`, language);
 
   const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
   if (style === 'short') {
-    if (language.startsWith('zh')) {
+    if (baseLang === 'zh') {
       return `${year}/${pad(monthIndex + 1)}/${pad(dayOfMonth)}`;
     }
     return `${pad(dayOfMonth)}/${pad(monthIndex + 1)}/${year}`;
   }
 
   if (style === 'long') {
-    if (language.startsWith('zh')) {
+    if (baseLang === 'zh') {
       return `${year}年${monthIndex + 1}月${dayOfMonth}日 ${dayLong}`;
     }
-    if (language === 'de') {
+    if (baseLang === 'de') {
       return `${dayLong}, ${dayOfMonth}. ${monthLong}`;
     }
-    if (language === 'es' || language === 'it' || language === 'pt') {
+    if (baseLang === 'es' || baseLang === 'it' || baseLang === 'pt') {
       return `${dayLong}, ${dayOfMonth} de ${monthLong}`;
     }
-    if (language === 'fr') {
+    if (baseLang === 'fr') {
       return `${dayLong} ${dayOfMonth} ${monthLong}`;
     }
-    if (language === 'ru') {
+    if (baseLang === 'ru') {
       return `${dayLong}, ${dayOfMonth} ${monthLong}`;
     }
     return `${dayLong}, ${monthLong} ${dayOfMonth}`;
@@ -54,18 +133,8 @@ export function formatDate(date: Date, style: 'short' | 'long' | 'combined', lan
 }
 
 export function formatTime(date: Date, format: '24h' | '12h' = '24h', timezone?: string): { time: string; ampm?: string } {
-  let targetDate = date;
-  if (timezone) {
-    try {
-      const invDate = new Date(date.toLocaleString('en-US', { timeZone: timezone }));
-      targetDate = invDate;
-    } catch {
-      // Keep local date if invalid timezone
-    }
-  }
-
-  let hours = targetDate.getHours();
-  const minutes = targetDate.getMinutes();
+  const { hours: rawHours, minutes } = getDateParts(date, timezone);
+  let hours = rawHours;
   const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
   if (format === '12h') {

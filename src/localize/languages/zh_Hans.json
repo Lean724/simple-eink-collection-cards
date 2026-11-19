@@ -63,7 +63,8 @@
   "schedule_agenda": {
     "name": "E-ink 日程安排卡片",
     "description": "紧凑的时间顺序日程列表，以 1px 实线分割。",
-    "max_items": "最多显示事件数"
+    "max_items": "最多显示事件数",
+    "all_day": "全天"
   },
   "time": {
     "name": "E-ink 时钟与日期卡片",

@@ -1,7 +1,7 @@
 import { html, TemplateResult, css, PropertyValues } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { BaseEinkCard } from './base-eink-card';
-import { ForecastCardConfig, ForecastItem } from '../types';
+import { ForecastCardConfig, ForecastEvent, ForecastItem, HassConnection } from '../types';
 import { getWeatherIcon, getWeatherDescription } from '../utils/weather-icons';
 import { localize } from '../localize/localize';
 
@@ -10,7 +10,10 @@ export class EinkForecastCard extends BaseEinkCard<ForecastCardConfig> {
   @state()
   private forecastList: ForecastItem[] = [];
 
-  private lastFetchTime = 0;
+  private _unsubForecast?: () => void | Promise<void>;
+  private _subscribedEntity?: string;
+  private _subscribedConnection?: HassConnection;
+  private _subscribeToken = 0;
 
   public static styles = [
     ...BaseEinkCard.styles,
@@ -134,47 +137,120 @@ export class EinkForecastCard extends BaseEinkCard<ForecastCardConfig> {
     return 3;
   }
 
+  public connectedCallback(): void {
+    super.connectedCallback();
+    this.subscribeForecastIfNeeded();
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.unsubscribeForecast();
+  }
+
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
     if (changedProps.has('hass') || changedProps.has('config')) {
-      this.fetchForecastIfNeeded();
+      this.subscribeForecastIfNeeded();
     }
   }
 
-  private async fetchForecastIfNeeded(): Promise<void> {
-    if (!this.hass || !this.config?.entity) return;
+  private invokeUnsub(unsub?: () => void | Promise<void>): void {
+    if (!unsub) return;
+    try {
+      Promise.resolve(unsub()).catch(() => {});
+    } catch {
+      // Ignore errors if subscription or socket is already closed
+    }
+  }
 
-    const now = Date.now();
-    // Cache forecast for 15 minutes to preserve e-ink refresh cycles
-    if (now - this.lastFetchTime < 900000 && this.forecastList.length > 0) {
+  private unsubscribeForecast(): void {
+    this._subscribeToken++;
+    this._subscribedEntity = undefined;
+    this._subscribedConnection = undefined;
+    const unsub = this._unsubForecast;
+    this._unsubForecast = undefined;
+    this.invokeUnsub(unsub);
+  }
+
+  private applyLegacyForecastFallback(entityId: string): void {
+    const ent = this.getEntity(entityId);
+    if (ent?.attributes?.forecast && Array.isArray(ent.attributes.forecast)) {
+      this.forecastList = ent.attributes.forecast;
+    }
+  }
+
+  private async subscribeForecastIfNeeded(): Promise<void> {
+    const entityId = this.config?.entity;
+    if (!this.isConnected || !this.hass || !entityId) {
+      if (this._subscribedEntity || this._unsubForecast) {
+        this.unsubscribeForecast();
+      }
+      if (!entityId && this.forecastList.length > 0) {
+        this.forecastList = [];
+      }
       return;
     }
-    this.lastFetchTime = now;
+
+    const connection = this.hass.connection;
+    if (this._subscribedEntity === entityId && this._subscribedConnection === connection) {
+      return;
+    }
+
+    const entityChanged = this._subscribedEntity !== entityId;
+    this.unsubscribeForecast();
+    if (entityChanged) {
+      this.forecastList = [];
+    }
+
+    // Wait until entity exists in hass.states before subscribing
+    if (!this.getEntity(entityId)) {
+      return;
+    }
+
+    this._subscribedEntity = entityId;
+    this._subscribedConnection = connection;
+    const token = this._subscribeToken;
+
+    if (!connection?.subscribeMessage) {
+      this.applyLegacyForecastFallback(entityId);
+      return;
+    }
 
     try {
-      if (this.hass.callWS) {
-        const response = await this.hass.callWS<{ forecast: ForecastItem[] }>({
+      const unsub = await connection.subscribeMessage<ForecastEvent>(
+        event => {
+          if (token !== this._subscribeToken) return;
+          const nextForecast = Array.isArray(event?.forecast) ? event.forecast : [];
+          if (JSON.stringify(nextForecast) !== JSON.stringify(this.forecastList)) {
+            this.forecastList = nextForecast;
+          }
+        },
+        {
           type: 'weather/subscribe_forecast',
           forecast_type: 'daily',
-          entity_id: this.config.entity
-        });
-        if (response?.forecast && Array.isArray(response.forecast)) {
-          this.forecastList = response.forecast;
-          return;
+          entity_id: entityId
         }
+      );
+
+      if (token !== this._subscribeToken || !this.isConnected) {
+        this.invokeUnsub(unsub);
+        return;
       }
+
+      this._unsubForecast = unsub;
     } catch {
-      // Fallback: read attributes.forecast
-      const ent = this.getEntity(this.config.entity);
-      if (ent?.attributes?.forecast && Array.isArray(ent.attributes.forecast)) {
-        this.forecastList = ent.attributes.forecast;
+      if (token === this._subscribeToken) {
+        this.applyLegacyForecastFallback(entityId);
       }
     }
   }
 
   private formatDayName(datetimeStr?: string): string {
     if (!datetimeStr) return '';
-    const date = new Date(datetimeStr);
+    const dateOnlyMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(datetimeStr);
+    const date = dateOnlyMatch
+      ? new Date(Number(dateOnlyMatch[1]), Number(dateOnlyMatch[2]) - 1, Number(dateOnlyMatch[3]))
+      : new Date(datetimeStr);
     if (isNaN(date.getTime())) return datetimeStr;
     const dayKeys = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     return localize(`days.${dayKeys[date.getDay()]}`, this.getLanguage());
@@ -204,12 +280,14 @@ export class EinkForecastCard extends BaseEinkCard<ForecastCardConfig> {
     const extraVal = ent?.attributes?.[extraAttr];
     let extraLabel = this.config.extra_attribute_label;
     if (!extraLabel) {
-      extraLabel = this.t(`forecast.extra_${extraAttr}`) || extraAttr;
+      const extraKey = `forecast.extra_${extraAttr}`;
+      const translatedExtra = this.t(extraKey);
+      extraLabel = translatedExtra !== extraKey ? translatedExtra : extraAttr;
     }
 
     let extraUnit = '';
     if (extraAttr === 'humidity') extraUnit = '%';
-    else if (extraAttr === 'pressure') extraUnit = ' hPa';
+    else if (extraAttr === 'pressure') extraUnit = ' ' + (ent?.attributes?.pressure_unit || 'hPa');
     else if (extraAttr === 'wind_speed') extraUnit = ' ' + (ent?.attributes?.wind_speed_unit || 'km/h');
     else if (extraAttr === 'precipitation') extraUnit = '%';
 

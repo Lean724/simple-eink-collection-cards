@@ -9,10 +9,10 @@ export class EinkSparklineBarCard extends BaseEinkCard<SparklineBarCardConfig> {
   @state()
   private historyPoints: number[] = [];
 
-  @state()
-  private isLoading = false;
-
   private lastFetchTime = 0;
+  private lastFetchKey?: string;
+  private isFetching = false;
+  private fetchToken = 0;
 
   public static styles = [
     ...BaseEinkCard.styles,
@@ -73,6 +73,20 @@ export class EinkSparklineBarCard extends BaseEinkCard<SparklineBarCardConfig> {
     return 2;
   }
 
+  public connectedCallback(): void {
+    super.connectedCallback();
+    this.fetchHistoryIfNeeded();
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.isFetching) {
+      this.lastFetchTime = 0;
+    }
+    this.fetchToken++;
+    this.isFetching = false;
+  }
+
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
     if (changedProps.has('hass') || changedProps.has('config')) {
@@ -81,55 +95,99 @@ export class EinkSparklineBarCard extends BaseEinkCard<SparklineBarCardConfig> {
   }
 
   private async fetchHistoryIfNeeded(): Promise<void> {
-    if (!this.hass || !this.config?.entity) return;
-
-    // Throttle history fetch to at most once every 5 minutes to protect e-ink bandwidth and processing
-    const now = Date.now();
-    if (now - this.lastFetchTime < 300000 && this.historyPoints.length > 0) {
+    const entityId = this.config?.entity;
+    if (!this.isConnected || !this.hass?.callWS || !entityId) {
+      if (!entityId && (this.historyPoints.length > 0 || this.lastFetchKey)) {
+        this.historyPoints = [];
+        this.lastFetchKey = undefined;
+        this.lastFetchTime = 0;
+        this.fetchToken++;
+        this.isFetching = false;
+      }
       return;
     }
-    this.lastFetchTime = now;
 
     const hours = this.config.hours_to_show || 24;
+    const attr = this.config.attribute;
+    const fetchKey = `${entityId}|${attr || ''}|${hours}`;
+    const keyChanged = this.lastFetchKey !== fetchKey;
+
+    if (keyChanged) {
+      this.fetchToken++;
+      this.historyPoints = [];
+      this.lastFetchTime = 0;
+      this.isFetching = false;
+    }
+
+    // Throttle history fetch to at most once every 5 minutes regardless of empty/error results
+    const now = Date.now();
+    if (
+      !keyChanged &&
+      (this.isFetching || (this.lastFetchTime > 0 && now - this.lastFetchTime < 300000))
+    ) {
+      return;
+    }
+
+    this.lastFetchKey = fetchKey;
+    this.lastFetchTime = now;
+    this.isFetching = true;
+    const token = ++this.fetchToken;
+
     const startTime = new Date(now - hours * 3600 * 1000).toISOString();
+    const needsAttributes = Boolean(attr);
 
     try {
-      this.isLoading = true;
-      if (this.hass.callWS) {
-        const result = await this.hass.callWS<Array<Array<{ s: string; lu: number }>>>({
-          type: 'history/history_during_period',
-          start_time: startTime,
-          entity_ids: [this.config.entity],
-          minimal_response: true,
-          no_attributes: true
-        });
+      const result = await this.hass.callWS<
+        Record<string, Array<{ s?: string; state?: string; a?: Record<string, any>; attributes?: Record<string, any>; lu?: number }>>
+      >({
+        type: 'history/history_during_period',
+        start_time: startTime,
+        entity_ids: [entityId],
+        minimal_response: !needsAttributes,
+        no_attributes: !needsAttributes
+      });
 
-        if (result && result[this.config.entity as any]) {
-          const rawEntries = (result as any)[this.config.entity];
-          const parsed = rawEntries
-            .map((entry: any) => parseFloat(entry.s))
-            .filter((val: number) => !isNaN(val));
+      if (token !== this.fetchToken) return;
 
-          if (parsed.length > 0) {
-            // Downsample to max 24 discrete points for e-ink clarity
-            const bucketCount = Math.min(24, Math.max(8, Math.round(hours)));
-            const step = Math.max(1, Math.floor(parsed.length / bucketCount));
-            const sampled: number[] = [];
-            for (let i = 0; i < parsed.length; i += step) {
-              sampled.push(parsed[i]);
+      const rawEntries = result?.[entityId];
+      if (Array.isArray(rawEntries)) {
+        const parsed = rawEntries
+          .map(entry => {
+            const rawVal = attr ? (entry.a ?? entry.attributes)?.[attr] : (entry.s ?? entry.state);
+            return parseFloat(String(rawVal));
+          })
+          .filter((val: number) => !isNaN(val));
+
+        if (parsed.length > 0) {
+          // Downsample to max 24 discrete points for e-ink clarity, preserving start and end
+          const bucketCount = Math.min(24, Math.max(8, Math.round(hours)));
+          let sampled: number[];
+          if (parsed.length <= bucketCount) {
+            sampled = parsed;
+          } else {
+            sampled = [];
+            for (let i = 0; i < bucketCount; i++) {
+              const idx = Math.round((i * (parsed.length - 1)) / (bucketCount - 1));
+              sampled.push(parsed[idx]);
             }
+          }
+          if (JSON.stringify(sampled) !== JSON.stringify(this.historyPoints)) {
             this.historyPoints = sampled;
           }
         }
       }
     } catch {
-      // Fallback: create basic single-point array
-      const current = parseFloat(this.getEntityState(this.config.entity, this.config.attribute));
-      if (!isNaN(current)) {
-        this.historyPoints = [current];
+      // Fallback: create basic single-point array; keep lastFetchTime to avoid spamming WS on hass updates
+      if (token === this.fetchToken && this.historyPoints.length === 0) {
+        const current = parseFloat(this.getEntityState(entityId, attr));
+        if (!isNaN(current)) {
+          this.historyPoints = [current];
+        }
       }
     } finally {
-      this.isLoading = false;
+      if (token === this.fetchToken) {
+        this.isFetching = false;
+      }
     }
   }
 
@@ -168,7 +226,14 @@ export class EinkSparklineBarCard extends BaseEinkCard<SparklineBarCardConfig> {
         </div>
 
         <div class="sparkline-chart">
-          ${renderSparklineSVG(points, chartType, 300, 50, 'var(--eink-fg)')}
+          ${renderSparklineSVG(
+            points,
+            chartType,
+            300,
+            this.config.height || 50,
+            'var(--eink-fg)',
+            this.config.stroke_width || 2.5
+          )}
         </div>
 
         <div class="sparkline-footer tabular">

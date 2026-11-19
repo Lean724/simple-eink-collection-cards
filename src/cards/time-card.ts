@@ -86,6 +86,10 @@ export class EinkTimeCard extends BaseEinkCard<TimeCardConfig> {
 
   public connectedCallback(): void {
     super.connectedCallback();
+    if (this.cleanupTimer) {
+      this.cleanupTimer();
+      this.cleanupTimer = undefined;
+    }
     this.currentDate = new Date();
     this.cleanupTimer = createMinuteSync(() => {
       this.currentDate = new Date();
@@ -113,7 +117,7 @@ export class EinkTimeCard extends BaseEinkCard<TimeCardConfig> {
     const lang = this.getLanguage();
 
     const formattedTime = formatTime(this.currentDate, timeFormat, timezone);
-    const formattedDate = showDate ? formatDate(this.currentDate, dateFormat, lang) : '';
+    const formattedDate = showDate ? formatDate(this.currentDate, dateFormat, lang, timezone) : '';
 
     const ent1 = this.getEntity(this.config?.entity_1);
     const ent2 = this.getEntity(this.config?.entity_2);

@@ -5,12 +5,27 @@ import { SparklineBarCardConfig } from '../types';
 @customElement('eink-sparkline-bar-editor')
 export class EinkSparklineBarEditor extends BaseEditor<SparklineBarCardConfig> {
   protected getSchema(): any[] {
-    return [
+    const schema: any[] = [
       {
         name: 'entity',
         label: this.t('common.entity'),
         selector: { entity: {} }
-      },
+      }
+    ];
+
+    if (this._config?.entity) {
+      schema.push({
+        name: 'attribute',
+        label: this.t('common.attribute'),
+        selector: {
+          attribute: {
+            entity_id: this._config.entity
+          }
+        }
+      });
+    }
+
+    schema.push(
       {
         name: 'name',
         label: this.t('common.name'),
@@ -43,6 +58,8 @@ export class EinkSparklineBarEditor extends BaseEditor<SparklineBarCardConfig> {
         label: this.t('common.inverted'),
         selector: { boolean: {} }
       }
-    ];
+    );
+
+    return schema;
   }
 }

@@ -29,11 +29,19 @@ export abstract class BaseEditor<T extends LovelaceCardConfig = LovelaceCardConf
     return localize(key, this.getLanguage());
   }
 
+  protected _computeLabel = (schema: any): string =>
+    schema.label || this.t(schema.name) || schema.name;
+
+  protected getFormData(): Record<string, any> {
+    return this._config;
+  }
+
   protected _valueChanged(ev: CustomEvent): void {
+    ev.stopPropagation();
     if (!this._config || !this.hass) return;
     const target = ev.target as any;
-    if (target && target.tagName === 'HA-FORM') {
-      this._config = { ...this._config, ...ev.detail.value };
+    if (target && target.tagName === 'HA-FORM' && ev.detail?.value) {
+      this._config = { type: this._config.type, ...ev.detail.value } as T;
       this.fireConfigChanged();
     }
   }
@@ -57,9 +65,9 @@ export abstract class BaseEditor<T extends LovelaceCardConfig = LovelaceCardConf
     return html`
       <ha-form
         .hass=${this.hass}
-        .data=${this._config}
+        .data=${this.getFormData()}
         .schema=${this.getSchema()}
-        .computeLabel=${(schema: any) => schema.label || this.t(schema.name) || schema.name}
+        .computeLabel=${this._computeLabel}
         @value-changed=${this._valueChanged}
       ></ha-form>
     `;
