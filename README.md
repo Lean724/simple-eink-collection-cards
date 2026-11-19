@@ -8,6 +8,8 @@ A cohesive suite of **high-contrast, zero-noise, battery-friendly Lovelace cards
 
 Designed from the ground up to eliminate ghosting, avoid needless refreshes, and maximize legibility on reflective, non-backlit displays.
 
+![Simple E-ink Collection Cards Preview](images/preview.png)
+
 ---
 
 ## The E-ink Design Philosophy
