@@ -9,8 +9,8 @@ const rootDir = path.resolve(__dirname, '..');
 
 console.log('--- RUNNING SIMPLE-EINK-COLLECTION-CARDS VERIFICATION ---');
 
-// 1. Verify 8 required language files
-const languages = ['en', 'es', 'zh_Hans', 'de', 'it', 'fr', 'pt', 'ru'];
+// 1. Verify 10 required language files
+const languages = ['en', 'es', 'zh_Hans', 'de', 'it', 'fr', 'pt', 'ru', 'pl', 'nl'];
 const langDir = path.join(rootDir, 'src', 'localize', 'languages');
 
 const loadedLangs = {};
@@ -91,7 +91,7 @@ for (const lang of languages) {
     }
   }
 }
-console.log(`✓ All 8 languages contain all ${requiredSections.length} sections and match all ${enKeyPaths.length} translation keys.`);
+console.log(`✓ All 10 languages contain all ${requiredSections.length} sections and match all ${enKeyPaths.length} translation keys.`);
 
 // 3. Verify all 8 card files exist
 const requiredCards = [

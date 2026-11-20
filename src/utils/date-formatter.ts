@@ -118,10 +118,10 @@ export function formatDate(
     if (baseLang === 'es' || baseLang === 'it' || baseLang === 'pt') {
       return `${dayLong}, ${dayOfMonth} de ${monthLong}`;
     }
-    if (baseLang === 'fr') {
+    if (baseLang === 'fr' || baseLang === 'nl') {
       return `${dayLong} ${dayOfMonth} ${monthLong}`;
     }
-    if (baseLang === 'ru') {
+    if (baseLang === 'ru' || baseLang === 'pl') {
       return `${dayLong}, ${dayOfMonth} ${monthLong}`;
     }
     return `${dayLong}, ${monthLong} ${dayOfMonth}`;

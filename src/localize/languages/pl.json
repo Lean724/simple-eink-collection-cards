@@ -1,0 +1,151 @@
+{
+  "common": {
+    "title": "Tytuł",
+    "inverted": "Odwrócony (Czarne tło, biały tekst)",
+    "entity": "Encja",
+    "attribute": "Atrybut (opcjonalnie)",
+    "name": "Własna nazwa (opcjonalnie)",
+    "unit": "Własna jednostka (opcjonalnie)",
+    "icon": "Własna ikona (opcjonalnie)",
+    "value": "Wartość",
+    "condition": "Warunek",
+    "optional": "Opcjonalnie",
+    "none": "Brak",
+    "active": "Aktywny",
+    "inactive": "Nieaktywny",
+    "open": "Otwarte",
+    "closed": "Zamknięte",
+    "on": "WŁ",
+    "off": "WYŁ",
+    "loading": "Ładowanie...",
+    "no_events": "Brak nadchodzących wydarzeń",
+    "no_data": "Brak dostępnych danych",
+    "not_configured": "Karta nieskonfigurowana. Wybierz encję."
+  },
+  "conditions": {
+    "equals": "Równe",
+    "not_equals": "Różne od",
+    "above": "Powyżej (>)",
+    "below": "Poniżej (<)",
+    "on": "Stan to WŁ / Prawda",
+    "off": "Stan to WYŁ / Fałsz"
+  },
+  "hero_metric": {
+    "name": "E-ink Główny wskaźnik",
+    "description": "Pojedynczy duży wskaźnik o wysokim kontraście z opcjonalnym trendem.",
+    "show_trend": "Pokaż trend / zmianę",
+    "trend_value": "Tekst trendu (np. +1.2° lub ▲ 5%)"
+  },
+  "grid_metrics": {
+    "name": "E-ink Siatka wskaźników",
+    "description": "Od 2 do 4 powiązanych wskaźników w zwartej siatce z ciągłymi liniami.",
+    "columns": "Kolumny (2, 3 lub 4)"
+  },
+  "status_list": {
+    "name": "E-ink Lista stanów",
+    "description": "Stany binarne lub dyskretne z kontrastowymi monochromatycznymi plakietkami.",
+    "invert_when_active": "Odwróć plakietkę gdy aktywna (Czarne tło, biały tekst)"
+  },
+  "alert_banner": {
+    "name": "E-ink Baner alertu",
+    "description": "Wysokokontrastowy warunkowy blok ostrzegawczy. Ukryty gdy nieaktywny.",
+    "message": "Treść ostrzeżenia",
+    "message_placeholder": "Ostrzeżenie: wykryto stan krytyczny!"
+  },
+  "sparkline_bar": {
+    "name": "E-ink Wykres słupkowy Sparkline",
+    "description": "Wyraźne słupki trendu 12/24h lub ciągła linia bez rozmycia antyaliasingu.",
+    "hours_to_show": "Liczba godzin do wyświetlenia (np. 12, 24)",
+    "chart_type": "Styl wykresu",
+    "chart_bars": "Dyskretne słupki pionowe",
+    "chart_line": "Ciągła linia"
+  },
+  "schedule_agenda": {
+    "name": "E-ink Kalendarz / Terminarz",
+    "description": "Kompaktowe wydarzenia w porządku chronologicznym oddzielone liniami 1px.",
+    "max_items": "Maksymalna liczba wydarzeń",
+    "all_day": "Cały dzień"
+  },
+  "time": {
+    "name": "E-ink Zegar i data",
+    "description": "Zegar e-ink zsynchronizowany z minutą, bez smużenia sekund i z formatami daty.",
+    "time_format": "Format czasu",
+    "show_date": "Pokaż datę",
+    "date_format": "Styl daty",
+    "date_short": "Krótka data (DD/MM/RRRR)",
+    "date_long": "Długa data (Dzień tygodnia + Dzień + Miesiąc)",
+    "date_combined": "Łączona (Dzień tygodnia, Krótka data)",
+    "timezone": "Własna strefa czasowa (np. Europe/Warsaw)",
+    "secondary_entity_1": "Encja pomocnicza 1",
+    "secondary_entity_2": "Encja pomocnicza 2"
+  },
+  "forecast": {
+    "name": "E-ink Prognoza pogody",
+    "description": "Stan pogody, temperatura, rozszerzona prognoza i dodatkowy wskaźnik.",
+    "days_to_show": "Liczba dni w prognozie",
+    "extra_attribute": "Dodatkowy wskaźnik",
+    "extra_humidity": "Wilgotność (%)",
+    "extra_pressure": "Ciśnienie atmosferyczne (hPa)",
+    "extra_wind_speed": "Prędkość wiatru",
+    "extra_precipitation": "Prawdopodobieństwo opadów (%)"
+  },
+  "weather": {
+    "clear_night": "Bezchmurnie",
+    "cloudy": "Pochmurno",
+    "fog": "Mgła",
+    "hail": "Grad",
+    "lightning": "Burza",
+    "lightning_rainy": "Burza z deszczem",
+    "partlycloudy": "Częściowe zachmurzenie",
+    "pouring": "Ulewa",
+    "rainy": "Deszcz",
+    "snowy": "Śnieg",
+    "snowy_rainy": "Deszcz ze śniegiem",
+    "sunny": "Słonecznie",
+    "windy": "Wietrznie",
+    "windy_variant": "Wietrznie",
+    "exceptional": "Zjawiska ekstremalne"
+  },
+  "days": {
+    "sun": "Nie",
+    "mon": "Pon",
+    "tue": "Wt",
+    "wed": "Śr",
+    "thu": "Czw",
+    "fri": "Pt",
+    "sat": "Sob",
+    "sunday": "Niedziela",
+    "monday": "Poniedziałek",
+    "tuesday": "Wtorek",
+    "wednesday": "Środa",
+    "thursday": "Czwartek",
+    "friday": "Piątek",
+    "saturday": "Sobota"
+  },
+  "months": {
+    "jan": "Sty",
+    "feb": "Lut",
+    "mar": "Mar",
+    "apr": "Kwi",
+    "may": "Maj",
+    "jun": "Cze",
+    "jul": "Lip",
+    "aug": "Sie",
+    "sep": "Wrz",
+    "oct": "Paź",
+    "nov": "Lis",
+    "dec": "Gru",
+    "january": "Styczeń",
+    "february": "Luty",
+    "march": "Marzec",
+    "april": "Kwiecień",
+    "may_long": "Maj",
+    "june": "Czerwiec",
+    "july": "Lipiec",
+    "august": "Sierpień",
+    "september": "Wrzesień",
+    "october": "Październik",
+    "november": "Listopad",
+    "december": "Grudzień"
+  }
+}

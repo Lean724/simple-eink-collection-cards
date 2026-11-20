@@ -1,0 +1,151 @@
+{
+  "common": {
+    "title": "Titel",
+    "inverted": "Geïnverteerd (Zwarte achtergrond, witte tekst)",
+    "entity": "Entiteit",
+    "attribute": "Attribuut (optioneel)",
+    "name": "Aangepaste naam (optioneel)",
+    "unit": "Aangepaste eenheid (optioneel)",
+    "icon": "Aangepast pictogram (optioneel)",
+    "value": "Waarde",
+    "condition": "Voorwaarde",
+    "optional": "Optioneel",
+    "none": "Geen",
+    "active": "Actief",
+    "inactive": "Inactief",
+    "open": "Open",
+    "closed": "Gesloten",
+    "on": "AAN",
+    "off": "UIT",
+    "loading": "Laden...",
+    "no_events": "Geen aankomende evenementen",
+    "no_data": "Geen gegevens beschikbaar",
+    "not_configured": "Kaart niet geconfigureerd. Selecteer een entiteit."
+  },
+  "conditions": {
+    "equals": "Is gelijk aan",
+    "not_equals": "Is niet gelijk aan",
+    "above": "Boven (>)",
+    "below": "Onder (<)",
+    "on": "Status is AAN / Waar",
+    "off": "Status is UIT / Onwaar"
+  },
+  "hero_metric": {
+    "name": "E-ink Hoofdmetriek",
+    "description": "Grote weergave van één meetwaarde met hoog contrast en optionele trend.",
+    "show_trend": "Trend / Delta weergeven",
+    "trend_value": "Trendtekst (bijv. +1.2° of ▲ 5%)"
+  },
+  "grid_metrics": {
+    "name": "E-ink Metriekenrooster",
+    "description": "2 tot 4 gerelateerde meetwaarden in een strak raster met doorlopende lijnen.",
+    "columns": "Kolommen (2, 3 of 4)"
+  },
+  "status_list": {
+    "name": "E-ink Statuslijst",
+    "description": "Binaire of discrete statussen met contrastrijke monochrome badges.",
+    "invert_when_active": "Badge inverteren indien actief (Zwarte achtergrond, witte tekst)"
+  },
+  "alert_banner": {
+    "name": "E-ink Waarschuwingsbanner",
+    "description": "Contrastrijk voorwaardelijk waarschuwingsblok. Verborgen wanneer inactief.",
+    "message": "Waarschuwingsbericht",
+    "message_placeholder": "Waarschuwing: kritieke toestand gedetecteerd!"
+  },
+  "sparkline_bar": {
+    "name": "E-ink Sparkline-balk",
+    "description": "Scherpe historische trendbalken (12/24u) of doorlopende lijn zonder wazige antialiasing.",
+    "hours_to_show": "Aantal uren om weer te geven (bijv. 12, 24)",
+    "chart_type": "Grafiekstijl",
+    "chart_bars": "Discrete verticale balken",
+    "chart_line": "Doorlopende lijn"
+  },
+  "schedule_agenda": {
+    "name": "E-ink Agenda / Kalender",
+    "description": "Compacte chronologische kalenderevenementen gescheiden door solide 1px lijnen.",
+    "max_items": "Maximaal aantal evenementen om te tonen",
+    "all_day": "Hele dag"
+  },
+  "time": {
+    "name": "E-ink Klok & Datum",
+    "description": "Op de minuut gesynchroniseerde e-ink klok zonder ghosting per seconde en met datumweergave.",
+    "time_format": "Tijdnotatie",
+    "show_date": "Datum weergeven",
+    "date_format": "Datumstijl",
+    "date_short": "Korte datum (DD/MM/JJJJ)",
+    "date_long": "Lange datum (Weekdag + Dag + Maand)",
+    "date_combined": "Gecombineerd (Weekdag, Korte datum)",
+    "timezone": "Aangepaste tijdzone (bijv. Europe/Amsterdam)",
+    "secondary_entity_1": "Secundaire entiteit 1",
+    "secondary_entity_2": "Secundaire entiteit 2"
+  },
+  "forecast": {
+    "name": "E-ink Weersverwachting",
+    "description": "Weersstatus, temperatuur, uitgebreide verwachting en extra meting.",
+    "days_to_show": "Aantal dagen in weersverwachting",
+    "extra_attribute": "Extra meetwaarde",
+    "extra_humidity": "Luchtvochtigheid (%)",
+    "extra_pressure": "Luchtdruk (hPa)",
+    "extra_wind_speed": "Windsnelheid",
+    "extra_precipitation": "Neerslagkans (%)"
+  },
+  "weather": {
+    "clear_night": "Helder",
+    "cloudy": "Bewolkt",
+    "fog": "Mistig",
+    "hail": "Hagel",
+    "lightning": "Onweer",
+    "lightning_rainy": "Onweersbuien met regen",
+    "partlycloudy": "Gedeeltelijk bewolkt",
+    "pouring": "Stortregen",
+    "rainy": "Regen",
+    "snowy": "Sneeuw",
+    "snowy_rainy": "Natte sneeuw",
+    "sunny": "Zonnig",
+    "windy": "Winderig",
+    "windy_variant": "Winderig",
+    "exceptional": "Uitzonderlijk weer"
+  },
+  "days": {
+    "sun": "Zon",
+    "mon": "Maa",
+    "tue": "Din",
+    "wed": "Woe",
+    "thu": "Don",
+    "fri": "Vri",
+    "sat": "Zat",
+    "sunday": "Zondag",
+    "monday": "Maandag",
+    "tuesday": "Dinsdag",
+    "wednesday": "Woensdag",
+    "thursday": "Donderdag",
+    "friday": "Vrijdag",
+    "saturday": "Zaterdag"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mrt",
+    "apr": "Apr",
+    "may": "Mei",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Okt",
+    "nov": "Nov",
+    "dec": "Dec",
+    "january": "Januari",
+    "february": "Februari",
+    "march": "Maart",
+    "april": "April",
+    "may_long": "Mei",
+    "june": "Juni",
+    "july": "Juli",
+    "august": "Augustus",
+    "september": "September",
+    "october": "Oktober",
+    "november": "November",
+    "december": "December"
+  }
+}

@@ -2,7 +2,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/default)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.1-green.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.0.2-green.svg)](package.json)
 
 A cohesive suite of **high-contrast, zero-noise, battery-friendly Lovelace cards** built specifically for **E-ink (E-paper)** screens in Home Assistant.
 
@@ -224,7 +224,7 @@ npm test
 ```
 
 * `npm run build` bundles all cards, editors, base styles, and translations into `dist/simple-eink-collection-cards.js` and mirrors it to the repository root.
-* `npm test` runs `tests/verify.mjs` to ensure completeness of all 8 language dictionaries and card definitions.
+* `npm test` runs `tests/verify.mjs` to ensure completeness of all 10 language dictionaries (`en`, `es`, `zh-Hans`, `de`, `it`, `fr`, `pt`, `ru`, `pl`, `nl`) and card definitions.
 
 ---
 

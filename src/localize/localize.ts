@@ -6,6 +6,8 @@ import * as it from './languages/it.json';
 import * as fr from './languages/fr.json';
 import * as pt from './languages/pt.json';
 import * as ru from './languages/ru.json';
+import * as pl from './languages/pl.json';
+import * as nl from './languages/nl.json';
 
 const languages: Record<string, any> = {
   en,
@@ -18,10 +20,12 @@ const languages: Record<string, any> = {
   fr,
   pt,
   'pt-BR': pt,
-  ru
+  ru,
+  pl,
+  nl
 };
 
-export const SUPPORTED_LANGUAGES = ['en', 'es', 'zh-Hans', 'de', 'it', 'fr', 'pt', 'ru'] as const;
+export const SUPPORTED_LANGUAGES = ['en', 'es', 'zh-Hans', 'de', 'it', 'fr', 'pt', 'ru', 'pl', 'nl'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 export function localize(string: string, language?: string): string {
