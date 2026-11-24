@@ -66,7 +66,7 @@ for (const card of einkCards) {
 }
 
 console.info(
-  `%c SIMPLE-EINK-COLLECTION-CARDS %c v1.1.0-beta.1 `,
+  `%c SIMPLE-EINK-COLLECTION-CARDS %c v1.1.0 `,
   'color: #ffffff; background: #000000; font-weight: 700; border: 1px solid #ffffff;',
   'color: #000000; background: #ffffff; font-weight: 700; border: 1px solid #000000;'
 );

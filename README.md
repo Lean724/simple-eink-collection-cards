@@ -2,13 +2,17 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/default)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.0--beta.1-green.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](package.json)
 
 A cohesive suite of **high-contrast, zero-noise, battery-friendly Lovelace cards** built specifically for **E-ink (E-paper)** screens in Home Assistant.
 
 Designed from the ground up to eliminate ghosting, avoid needless refreshes, and maximize legibility on reflective, non-backlit displays.
 
 ![Simple E-ink Collection Cards Preview](images/preview.png)
+
+### New in v1.1.0: Month Calendar & Vertical Weather
+
+![Month Calendar and Vertical Weather Preview](images/month-vertical-weather.png)
 
 ---
 
