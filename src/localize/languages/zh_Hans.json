@@ -20,7 +20,10 @@
     "loading": "加载中...",
     "no_events": "近期无日程",
     "no_data": "暂无数据",
-    "not_configured": "卡片未配置，请选择实体。"
+    "not_configured": "卡片未配置，请选择实体。",
+    "tap_action": "点按操作",
+    "double_tap_action": "双击操作",
+    "hold_action": "长按操作"
   },
   "conditions": {
     "equals": "等于",
@@ -66,6 +69,19 @@
     "max_items": "最多显示事件数",
     "all_day": "全天"
   },
+  "month_calendar": {
+    "name": "E-ink 月历卡片",
+    "description": "完整月历网格，支持周数显示、反色高亮当前周与今日日程摘要。",
+    "entities": "日历实体",
+    "first_day_of_week": "每周起始日",
+    "monday": "周一",
+    "sunday": "周日",
+    "show_week_numbers": "显示周数",
+    "max_events": "今日显示事件数",
+    "week_short": "周",
+    "more_events": "个事件",
+    "more_event": "个事件"
+  },
   "time": {
     "name": "E-ink 时钟与日期卡片",
     "description": "分钟级精准同步电子墨水时钟，无秒针刷新残影。",
@@ -82,8 +98,15 @@
   "forecast": {
     "name": "E-ink 天气预报卡片",
     "description": "天气状态、气温、未来多日预报及额外指标槽位。",
+    "layout": "布局方向",
+    "layout_horizontal": "横向",
+    "layout_vertical": "纵向",
+    "location": "位置名称（可选）",
+    "weather_header": "天气",
+    "today": "今天",
     "days_to_show": "预报天数",
     "extra_attribute": "额外指标",
+    "extra_none": "无",
     "extra_humidity": "湿度 (%)",
     "extra_pressure": "气压 (hPa)",
     "extra_wind_speed": "风速",

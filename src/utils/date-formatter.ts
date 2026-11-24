@@ -1,10 +1,10 @@
 import { localize } from '../localize/localize';
 
-const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-const DAY_LONG_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+export const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+export const DAY_LONG_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
-const MONTH_KEYS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-const MONTH_LONG_KEYS = [
+export const MONTH_KEYS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+export const MONTH_LONG_KEYS = [
   'january', 'february', 'march', 'april', 'may_long', 'june',
   'july', 'august', 'september', 'october', 'november', 'december'
 ];
@@ -19,7 +19,7 @@ const WEEKDAY_MAP: Record<string, number> = {
   Sat: 6
 };
 
-interface DateParts {
+export interface DateParts {
   year: number;
   monthIndex: number;
   dayOfMonth: number;
@@ -28,7 +28,7 @@ interface DateParts {
   minutes: number;
 }
 
-function getDateParts(date: Date, timezone?: string): DateParts {
+export function getDateParts(date: Date, timezone?: string): DateParts {
   if (timezone) {
     try {
       const parts = new Intl.DateTimeFormat('en-US', {
@@ -149,4 +149,35 @@ export function formatTime(date: Date, format: '24h' | '12h' = '24h', timezone?:
   return {
     time: `${pad(hours)}:${pad(minutes)}`
   };
+}
+
+/** Converts a wall-clock date/time in an optional IANA timezone into a UTC-backed Date instant. */
+export function zonedWallTimeToDate(
+  year: number,
+  monthIndex: number,
+  dayOfMonth: number,
+  hours = 0,
+  minutes = 0,
+  seconds = 0,
+  ms = 0,
+  timezone?: string
+): Date {
+  if (!timezone) {
+    return new Date(year, monthIndex, dayOfMonth, hours, minutes, seconds, ms);
+  }
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: timezone }).format(new Date());
+    const targetWallUtc = Date.UTC(year, monthIndex, dayOfMonth, hours, minutes, 0, 0);
+    let candidate = new Date(targetWallUtc);
+    for (let i = 0; i < 2; i++) {
+      const p = getDateParts(candidate, timezone);
+      const gotWallUtc = Date.UTC(p.year, p.monthIndex, p.dayOfMonth, p.hours, p.minutes, 0, 0);
+      const diffMs = targetWallUtc - gotWallUtc;
+      if (diffMs === 0) break;
+      candidate = new Date(candidate.getTime() + diffMs);
+    }
+    return new Date(candidate.getTime() + seconds * 1000 + ms);
+  } catch {
+    return new Date(year, monthIndex, dayOfMonth, hours, minutes, seconds, ms);
+  }
 }

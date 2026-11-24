@@ -20,7 +20,10 @@
     "loading": "Loading...",
     "no_events": "No upcoming events",
     "no_data": "No data available",
-    "not_configured": "Card not configured. Please select an entity."
+    "not_configured": "Card not configured. Please select an entity.",
+    "tap_action": "Tap Action",
+    "double_tap_action": "Double Tap Action",
+    "hold_action": "Hold Action"
   },
   "conditions": {
     "equals": "Equals",
@@ -66,6 +69,19 @@
     "max_items": "Maximum events to show",
     "all_day": "All day"
   },
+  "month_calendar": {
+    "name": "E-ink Month Calendar",
+    "description": "Full monthly grid with week numbers, inverted current week, and today's events.",
+    "entities": "Calendars",
+    "first_day_of_week": "First day of week",
+    "monday": "Monday",
+    "sunday": "Sunday",
+    "show_week_numbers": "Show week numbers",
+    "max_events": "Today events to show",
+    "week_short": "Wk",
+    "more_events": "events",
+    "more_event": "event"
+  },
   "time": {
     "name": "E-ink Clock & Date",
     "description": "Minute-synchronized e-ink clock with zero-second ghosting and date formats.",
@@ -82,8 +98,15 @@
   "forecast": {
     "name": "E-ink Weather Forecast",
     "description": "Weather status, temperature, extended forecast and extra metric slot.",
+    "layout": "Layout Orientation",
+    "layout_horizontal": "Horizontal",
+    "layout_vertical": "Vertical",
+    "location": "Location (optional)",
+    "weather_header": "Weather",
+    "today": "Today",
     "days_to_show": "Days to show in forecast",
     "extra_attribute": "Extra Metric",
+    "extra_none": "None",
     "extra_humidity": "Humidity (%)",
     "extra_pressure": "Atmospheric Pressure (hPa)",
     "extra_wind_speed": "Wind Speed",

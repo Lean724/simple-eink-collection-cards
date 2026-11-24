@@ -116,6 +116,108 @@ export class EinkForecastCard extends BaseEinkCard<ForecastCardConfig> {
         font-size: 10px;
         opacity: 0.85;
       }
+      .eink-card.interactive {
+        cursor: pointer;
+      }
+      .forecast-v-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .v-title {
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+      .v-location {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .forecast-v-current {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--eink-border-color);
+      }
+      .v-current-icon {
+        --mdc-icon-size: 64px;
+        margin: 4px 0 8px 0;
+      }
+      .v-current-temp {
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.1;
+      }
+      .v-current-condition {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 8px;
+        align-self: flex-start;
+        text-align: left;
+      }
+      .v-current-extra {
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 4px;
+        align-self: flex-start;
+        text-align: left;
+        opacity: 0.9;
+      }
+      .forecast-v-list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .forecast-v-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--eink-border-color);
+      }
+      .forecast-v-row:last-child {
+        border-bottom: none;
+        padding-bottom: 2px;
+      }
+      .v-day-icon {
+        --mdc-icon-size: 28px;
+        flex-shrink: 0;
+      }
+      .v-day-details {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+      }
+      .v-day-name {
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      .v-day-cond {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .v-day-temp {
+        font-size: 18px;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
     `
   ];
 
@@ -128,13 +230,14 @@ export class EinkForecastCard extends BaseEinkCard<ForecastCardConfig> {
     return {
       type: 'custom:eink-forecast',
       entity: '',
+      layout: 'horizontal',
       days_to_show: 4,
       extra_attribute: 'humidity'
     };
   }
 
   public getCardSize(): number {
-    return 3;
+    return this.config?.layout === 'vertical' ? 5 : 3;
   }
 
   public connectedCallback(): void {
@@ -277,9 +380,10 @@ export class EinkForecastCard extends BaseEinkCard<ForecastCardConfig> {
 
     // Extra attribute handling
     const extraAttr = this.config.extra_attribute || 'humidity';
-    const extraVal = ent?.attributes?.[extraAttr];
+    const hasExtra = extraAttr !== 'none';
+    const extraVal = hasExtra ? ent?.attributes?.[extraAttr] : undefined;
     let extraLabel = this.config.extra_attribute_label;
-    if (!extraLabel) {
+    if (!extraLabel && hasExtra) {
       const extraKey = `forecast.extra_${extraAttr}`;
       const translatedExtra = this.t(extraKey);
       extraLabel = translatedExtra !== extraKey ? translatedExtra : extraAttr;
@@ -293,9 +397,73 @@ export class EinkForecastCard extends BaseEinkCard<ForecastCardConfig> {
 
     const daysToShow = this.config.days_to_show || 4;
     const forecast = this.forecastList.slice(0, daysToShow);
+    const isInteractive = this.hasActiveActions(this.config.entity);
+
+    if (this.config.layout === 'vertical') {
+      const headerTitle = this.config.title || this.t('forecast.weather_header');
+      const locationLabel = this.config.location || ent?.attributes?.friendly_name || '';
+      const todayLow = this.forecastList[0]?.templow;
+      const vTempText =
+        todayLow !== undefined
+          ? `${temp !== undefined ? temp : '--'}${tempUnit} / ${todayLow}${tempUnit}`
+          : `${temp !== undefined ? temp : '--'}${tempUnit}`;
+
+      return html`
+        <div
+          class="eink-card ${isInteractive ? 'interactive' : ''}"
+          @pointerdown=${(e: PointerEvent) => this.handleActionPointerDown(e, this.config.entity)}
+          @pointerup=${() => this.handleActionPointerEnd()}
+          @pointercancel=${() => this.handleActionPointerEnd()}
+          @pointerleave=${() => this.handleActionPointerEnd()}
+          @click=${(e: Event) => this.handleActionClick(e, this.config.entity)}
+        >
+          <div class="forecast-v-header">
+            <span class="v-title">${headerTitle}</span>
+            ${locationLabel ? html`<span class="v-location">${locationLabel}</span>` : ''}
+          </div>
+
+          <div class="forecast-v-current">
+            <ha-icon class="v-current-icon" .icon=${conditionIcon}></ha-icon>
+            <div class="v-current-temp tabular">${vTempText}</div>
+            <div class="v-current-condition">${this.t('forecast.today')}: ${conditionText}</div>
+            ${extraVal !== undefined
+              ? html`<div class="v-current-extra tabular">${extraLabel}: ${extraVal}${extraUnit}</div>`
+              : ''}
+          </div>
+
+          ${forecast.length > 0
+            ? html`
+                <div class="forecast-v-list">
+                  ${forecast.map(
+                    day => html`
+                      <div class="forecast-v-row">
+                        <ha-icon class="v-day-icon" .icon=${getWeatherIcon(day.condition)}></ha-icon>
+                        <div class="v-day-details">
+                          <span class="v-day-name">${this.formatDayName(day.datetime)}:</span>
+                          <span class="v-day-cond">${getWeatherDescription(day.condition, lang)}</span>
+                        </div>
+                        <span class="v-day-temp tabular"
+                          >${day.temperature !== undefined ? `${day.temperature}${tempUnit}` : '--'}</span
+                        >
+                      </div>
+                    `
+                  )}
+                </div>
+              `
+            : ''}
+        </div>
+      `;
+    }
 
     return html`
-      <div class="eink-card" @click=${() => this.handleMoreInfo(this.config.entity)}>
+      <div
+        class="eink-card ${isInteractive ? 'interactive' : ''}"
+        @pointerdown=${(e: PointerEvent) => this.handleActionPointerDown(e, this.config.entity)}
+        @pointerup=${() => this.handleActionPointerEnd()}
+        @pointercancel=${() => this.handleActionPointerEnd()}
+        @pointerleave=${() => this.handleActionPointerEnd()}
+        @click=${(e: Event) => this.handleActionClick(e, this.config.entity)}
+      >
         ${this.config.title ? html`<div class="eink-title">${this.config.title}</div>` : ''}
 
         <div class="forecast-main">

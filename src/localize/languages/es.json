@@ -20,7 +20,10 @@
     "loading": "Cargando...",
     "no_events": "Sin eventos próximos",
     "no_data": "Sin datos disponibles",
-    "not_configured": "Tarjeta no configurada. Por favor selecciona una entidad."
+    "not_configured": "Tarjeta no configurada. Por favor selecciona una entidad.",
+    "tap_action": "Acción al tocar",
+    "double_tap_action": "Acción al tocar dos veces",
+    "hold_action": "Acción al mantener pulsado"
   },
   "conditions": {
     "equals": "Es igual a",
@@ -66,6 +69,19 @@
     "max_items": "Máximo de eventos a mostrar",
     "all_day": "Todo el día"
   },
+  "month_calendar": {
+    "name": "E-ink Calendario Mensual",
+    "description": "Vista mensual completa con números de semana, semana actual invertida y eventos de hoy.",
+    "entities": "Calendarios",
+    "first_day_of_week": "Primer día de la semana",
+    "monday": "Lunes",
+    "sunday": "Domingo",
+    "show_week_numbers": "Mostrar números de semana",
+    "max_events": "Eventos de hoy a mostrar",
+    "week_short": "Sem",
+    "more_events": "eventos",
+    "more_event": "evento"
+  },
   "time": {
     "name": "E-ink Reloj y Fecha",
     "description": "Reloj sincronizado al minuto, sin parpadeo de segundos y formato de fecha.",
@@ -82,8 +98,15 @@
   "forecast": {
     "name": "E-ink Clima y Pronóstico",
     "description": "Estado del clima, temperatura, pronóstico extendido y slot de métrica extra.",
+    "layout": "Orientación del diseño",
+    "layout_horizontal": "Horizontal",
+    "layout_vertical": "Vertical",
+    "location": "Ubicación (opcional)",
+    "weather_header": "Clima",
+    "today": "Hoy",
     "days_to_show": "Días a mostrar en pronóstico",
     "extra_attribute": "Métrica adicional",
+    "extra_none": "Ninguna",
     "extra_humidity": "Humedad (%)",
     "extra_pressure": "Presión atmosférica (hPa)",
     "extra_wind_speed": "Velocidad del viento",

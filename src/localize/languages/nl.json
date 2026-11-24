@@ -20,7 +20,10 @@
     "loading": "Laden...",
     "no_events": "Geen aankomende evenementen",
     "no_data": "Geen gegevens beschikbaar",
-    "not_configured": "Kaart niet geconfigureerd. Selecteer een entiteit."
+    "not_configured": "Kaart niet geconfigureerd. Selecteer een entiteit.",
+    "tap_action": "Tikactie",
+    "double_tap_action": "Dubbeltikactie",
+    "hold_action": "Actie bij vasthouden"
   },
   "conditions": {
     "equals": "Is gelijk aan",
@@ -66,6 +69,19 @@
     "max_items": "Maximaal aantal evenementen om te tonen",
     "all_day": "Hele dag"
   },
+  "month_calendar": {
+    "name": "E-ink Maandkalender",
+    "description": "Volledig maandoverzicht met weeknummers, geïnverteerde huidige week en evenementen van vandaag.",
+    "entities": "Kalenders",
+    "first_day_of_week": "Eerste dag van de week",
+    "monday": "Maandag",
+    "sunday": "Zondag",
+    "show_week_numbers": "Weeknummers weergeven",
+    "max_events": "Aantal evenementen van vandaag",
+    "week_short": "Wk",
+    "more_events": "evenementen",
+    "more_event": "evenement"
+  },
   "time": {
     "name": "E-ink Klok & Datum",
     "description": "Op de minuut gesynchroniseerde e-ink klok zonder ghosting per seconde en met datumweergave.",
@@ -82,8 +98,15 @@
   "forecast": {
     "name": "E-ink Weersverwachting",
     "description": "Weersstatus, temperatuur, uitgebreide verwachting en extra meting.",
+    "layout": "Lay-outoriëntatie",
+    "layout_horizontal": "Horizontaal",
+    "layout_vertical": "Verticaal",
+    "location": "Locatie (optioneel)",
+    "weather_header": "Weer",
+    "today": "Vandaag",
     "days_to_show": "Aantal dagen in weersverwachting",
     "extra_attribute": "Extra meetwaarde",
+    "extra_none": "Geen",
     "extra_humidity": "Luchtvochtigheid (%)",
     "extra_pressure": "Luchtdruk (hPa)",
     "extra_wind_speed": "Windsnelheid",

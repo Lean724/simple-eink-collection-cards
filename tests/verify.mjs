@@ -35,6 +35,7 @@ const requiredSections = [
   'alert_banner',
   'sparkline_bar',
   'schedule_agenda',
+  'month_calendar',
   'time',
   'forecast',
   'weather',
@@ -93,7 +94,7 @@ for (const lang of languages) {
 }
 console.log(`✓ All 10 languages contain all ${requiredSections.length} sections and match all ${enKeyPaths.length} translation keys.`);
 
-// 3. Verify all 8 card files exist
+// 3. Verify all 9 card files exist
 const requiredCards = [
   'hero-metric-card.ts',
   'grid-metrics-card.ts',
@@ -101,6 +102,7 @@ const requiredCards = [
   'alert-banner-card.ts',
   'sparkline-bar-card.ts',
   'schedule-agenda-card.ts',
+  'month-calendar-card.ts',
   'time-card.ts',
   'forecast-card.ts'
 ];
@@ -112,9 +114,9 @@ for (const cardFile of requiredCards) {
     process.exit(1);
   }
 }
-console.log(`✓ All 8 card source files exist.`);
+console.log(`✓ All 9 card source files exist.`);
 
-// 4. Verify all 8 editor files exist
+// 4. Verify all 9 editor files exist
 const requiredEditors = [
   'hero-metric-editor.ts',
   'grid-metrics-editor.ts',
@@ -122,6 +124,7 @@ const requiredEditors = [
   'alert-banner-editor.ts',
   'sparkline-bar-editor.ts',
   'schedule-agenda-editor.ts',
+  'month-calendar-editor.ts',
   'time-editor.ts',
   'forecast-editor.ts'
 ];
@@ -133,7 +136,7 @@ for (const edFile of requiredEditors) {
     process.exit(1);
   }
 }
-console.log(`✓ All 8 visual editor source files exist.`);
+console.log(`✓ All 9 visual editor source files exist.`);
 
 // 5. Verify bundle files exist, match byte-for-byte, and contain expected API calls
 const bundlePath = path.join(rootDir, 'dist', 'simple-eink-collection-cards.js');
@@ -156,6 +159,7 @@ const cardTags = [
   'eink-alert-banner',
   'eink-sparkline-bar',
   'eink-schedule-agenda',
+  'eink-month-calendar',
   'eink-time',
   'eink-forecast'
 ];
@@ -165,7 +169,7 @@ for (const tag of cardTags) {
 assert(bundleContent.includes('weather/subscribe_forecast'), 'Compiled bundle missing weather/subscribe_forecast');
 assert(bundleContent.includes('subscribeMessage'), 'Compiled bundle missing subscribeMessage');
 assert(!bundleContent.includes('calendar/get_events'), 'Compiled bundle must not call nonexistent calendar/get_events');
-console.log(`✓ Compiled bundle matches root copy, registers all 8 cards, and uses valid Home Assistant APIs.`);
+console.log(`✓ Compiled bundle matches root copy, registers all 9 cards, and uses valid Home Assistant APIs.`);
 
 // 6. Behavioral tests using a minimal zero-dependency Node DOM shim
 function setupDomShim() {
@@ -276,7 +280,7 @@ async function flushMicrotasks(ticks = 4) {
 const registry = setupDomShim();
 await import(pathToFileURL(bundlePath).href);
 
-// Verify all 8 cards and 8 editors registered
+// Verify all 9 cards and 9 editors registered
 const expectedTags = [
   ...cardTags,
   ...cardTags.map(tag => `${tag}-editor`)
@@ -291,7 +295,7 @@ for (const tag of cardTags) {
     `window.customCards missing card '${tag}'`
   );
 }
-console.log(`✓ All 8 cards and 8 editors register cleanly in customElements & window.customCards.`);
+console.log(`✓ All 9 cards and 9 editors register cleanly in customElements & window.customCards.`);
 
 // 6A. Behavioral tests for eink-forecast
 {
@@ -474,7 +478,63 @@ console.log(`✓ All 8 cards and 8 editors register cleanly in customElements & 
   elUnits.isConnected = false;
   elUnits.disconnectedCallback();
 
-  console.log('✓ eink-forecast behavioral tests passed (subscribeMessage, cleanup, race guard, legacy fallback, units).');
+  // Vertical layout + extra_attribute: 'none' + hass-action
+  const elVert = mountTestCard(registry, 'eink-forecast');
+  const vertActions = [];
+  elVert.addEventListener('hass-action', e => vertActions.push(e.detail));
+  elVert.setConfig({
+    type: 'custom:eink-forecast',
+    entity: 'weather.london',
+    layout: 'vertical',
+    location: 'London',
+    days_to_show: 3,
+    extra_attribute: 'none'
+  });
+  assert.equal(elVert.getCardSize(), 5, 'Vertical forecast layout should report card size 5');
+  elVert.hass = {
+    language: 'en',
+    states: {
+      'weather.london': {
+        entity_id: 'weather.london',
+        state: 'partlycloudy',
+        attributes: {
+          temperature: 18,
+          temperature_unit: '°C',
+          humidity: 60,
+          forecast: [
+            { datetime: '2023-10-23', condition: 'partlycloudy', temperature: 18, templow: 9 },
+            { datetime: '2023-10-24', condition: 'rainy', temperature: 16, templow: 8 },
+            { datetime: '2023-10-25', condition: 'sunny', temperature: 19, templow: 10 }
+          ]
+        }
+      }
+    }
+  };
+  elVert.isConnected = true;
+  elVert.connectedCallback();
+  await elVert.updateComplete;
+  await flushMicrotasks();
+  await elVert.updateComplete;
+
+  assert(elVert._rendered.includes('forecast-v-header'), 'Vertical forecast must render vertical header');
+  assert(elVert._rendered.includes('London'), 'Vertical forecast must render configured location');
+  assert(elVert._rendered.includes('18°C / 9°C'), 'Vertical forecast must render current / today low temp');
+  assert(elVert._rendered.includes('Today: Partly cloudy'), 'Vertical forecast must render Today condition line');
+  assert(!elVert._rendered.includes('Humidity'), 'extra_attribute: none must suppress extra metric');
+  assert(elVert._rendered.includes('forecast-v-row'), 'Vertical forecast must render vertical day rows');
+  assert(elVert._rendered.includes('16°C'), 'Vertical forecast must render daily temp with unit');
+
+  const clickHandler = elVert._lastTemplate.values.find(v => typeof v === 'function');
+  assert(clickHandler, 'Vertical forecast root must bind click action handler');
+  elVert._lastTemplate.values[5].call(elVert, {});
+  assert.equal(vertActions.length, 1, 'Tapping forecast card must dispatch hass-action');
+  assert.equal(vertActions[0].action, 'tap');
+  assert.deepEqual(vertActions[0].config.tap_action, { action: 'more-info' });
+
+  elVert.isConnected = false;
+  elVert.disconnectedCallback();
+
+  console.log('✓ eink-forecast behavioral tests passed (subscribeMessage, cleanup, race guard, legacy fallback, units, vertical mode, hass-action).');
 }
 
 // 6B. Behavioral tests for eink-schedule-agenda
@@ -817,7 +877,38 @@ console.log(`✓ All 8 cards and 8 editors register cleanly in customElements & 
   await alertEd.updateComplete;
   assert(alertEd._lastTemplate.values[2].some(s => s.name === 'inverted'), 'Alert banner editor must include inverted option');
 
-  console.log('✓ Visual editor behavioral tests passed (grid-metrics, status-list, attribute guards, base-editor).');
+  // Forecast Editor: layout, location, none extra_attribute, ui_action selectors
+  const forecastEd = mountTestCard(registry, 'eink-forecast-editor');
+  forecastEd.hass = { language: 'en', states: {} };
+  forecastEd.setConfig({ type: 'custom:eink-forecast', entity: 'weather.home' });
+  forecastEd.isConnected = true;
+  forecastEd.connectedCallback();
+  await forecastEd.updateComplete;
+  const forecastSchema = forecastEd._lastTemplate.values[2];
+  assert(forecastSchema.some(s => s.name === 'layout'), 'Forecast editor must include layout selector');
+  assert(forecastSchema.some(s => s.name === 'location'), 'Forecast editor must include location field');
+  assert(forecastSchema.some(s => s.name === 'tap_action' && s.selector?.ui_action), 'Forecast editor must include tap_action ui_action selector');
+  const extraField = forecastSchema.find(s => s.name === 'extra_attribute');
+  assert(extraField.selector.select.options.some(o => o.value === 'none'), 'Forecast extra_attribute must allow none');
+
+  // Month Calendar Editor: legacy entity migration, defaults, ui_action selectors
+  const monthEd = mountTestCard(registry, 'eink-month-calendar-editor');
+  monthEd.hass = { language: 'en', states: {} };
+  monthEd.setConfig({ type: 'custom:eink-month-calendar', entity: 'calendar.personal' });
+  monthEd.isConnected = true;
+  monthEd.connectedCallback();
+  await monthEd.updateComplete;
+  const monthData = monthEd._lastTemplate.values[1];
+  const monthSchema = monthEd._lastTemplate.values[2];
+  assert.deepEqual(monthData.entities, ['calendar.personal'], 'Month editor must normalize legacy entity to entities array');
+  assert.equal(monthData.first_day_of_week, 'monday');
+  assert.equal(monthData.time_format, 'auto');
+  assert.equal(monthData.show_week_numbers, true);
+  assert.equal(monthData.max_events, 2);
+  assert(monthSchema.some(s => s.name === 'entities' && s.selector?.entity?.multiple === true), 'Month editor entities selector must enable multiple calendars');
+  assert(monthSchema.some(s => s.name === 'tap_action' && s.selector?.ui_action), 'Month editor must include ui_action selector');
+
+  console.log('✓ Visual editor behavioral tests passed (grid-metrics, status-list, forecast, month-calendar, base-editor).');
 }
 
 // 6E. Behavioral tests for eink-alert-banner, eink-grid-metrics, eink-status-list, and eink-time
@@ -929,6 +1020,141 @@ console.log(`✓ All 8 cards and 8 editors register cleanly in customElements & 
   }
 
   console.log('✓ Remaining card behavioral tests passed (alert-banner, grid-metrics, status-list, time-card).');
+}
+
+// 6F. Behavioral tests for eink-month-calendar
+{
+  const RealDate = globalThis.Date;
+  const fixedInstant = new RealDate('2023-10-23T12:00:00Z').getTime();
+  globalThis.Date = class MockDate extends RealDate {
+    constructor(...args) {
+      super(args.length === 0 ? fixedInstant : args[0]);
+    }
+    static now() {
+      return fixedInstant;
+    }
+  };
+
+  try {
+    const el = mountTestCard(registry, 'eink-month-calendar');
+    const apiCalls = [];
+    const wsCalls = [];
+    const actions = [];
+    el.addEventListener('hass-action', e => actions.push(e.detail));
+
+    el.setConfig({
+      type: 'custom:eink-month-calendar',
+      entities: ['calendar.work', 'calendar.personal'],
+      first_day_of_week: 'monday',
+      time_format: '12h',
+      show_week_numbers: true,
+      max_events: 2,
+      timezone: 'UTC'
+    });
+
+    el.hass = {
+      language: 'en',
+      states: {},
+      async callWS(msg) {
+        wsCalls.push(msg);
+        return {};
+      },
+      async callApi(method, apiPath) {
+        apiCalls.push({ method, apiPath });
+        if (apiPath.startsWith('calendars/calendar.work')) {
+          return [
+            { start: { date: '2023-10-22' }, end: { date: '2023-10-23' }, summary: 'Yesterday All Day Should Filter' },
+            { start: { dateTime: '2023-10-23T10:00:00Z' }, end: { dateTime: '2023-10-23T10:30:00Z' }, summary: 'Team Sync' },
+            { start: { dateTime: '2023-10-23T16:30:00Z' }, end: { dateTime: '2023-10-23T17:00:00Z' }, summary: 'Sprint Retro' },
+            { start: { dateTime: '2023-10-23T18:00:00Z' }, end: { dateTime: '2023-10-23T19:00:00Z' }, summary: 'Gym' }
+          ];
+        }
+        if (apiPath.startsWith('calendars/calendar.personal')) {
+          return [
+            { start: { dateTime: '2023-10-23T15:00:00Z' }, end: { dateTime: '2023-10-23T16:00:00Z' }, summary: 'Design Review' },
+            { start: { dateTime: '2023-10-23T19:30:00Z' }, end: { dateTime: '2023-10-23T20:00:00Z' }, summary: 'Dinner' }
+          ];
+        }
+        return [];
+      }
+    };
+
+    el.isConnected = true;
+    el.connectedCallback();
+    await el.updateComplete;
+    await flushMicrotasks();
+    await el.updateComplete;
+
+    assert.equal(wsCalls.length, 0, 'eink-month-calendar must not call hass.callWS');
+    assert.equal(apiCalls.length, 2, 'eink-month-calendar must fetch all configured calendars in parallel');
+    assert(el._rendered.includes('October 2023'), 'Month header must render month and year');
+    assert(el._rendered.includes('Monday'), 'Today summary must render weekday');
+    assert(el._rendered.includes('today-number tabular">23<'), 'Today summary must render day of month');
+    assert(el._rendered.includes('10:00 AM'), '12h format must render 10:00 AM');
+    assert(el._rendered.includes('Team Sync'), 'First chronological event must render');
+    assert(el._rendered.includes('3:00 PM'), 'Second calendar event sorted chronologically must render');
+    assert(el._rendered.includes('Design Review'), 'Second calendar summary must render');
+    assert(!el._rendered.includes('Yesterday All Day Should Filter'), 'Yesterday all-day event ending today must be excluded');
+    assert(el._rendered.includes('+3') && el._rendered.includes('events'), 'Remaining overflow count +3 events must render');
+
+    // Week numbers + current week inverted + current day double inverted
+    assert(el._rendered.includes('wk-header">Wk<'), 'Week column header Wk must render');
+    assert(el._rendered.includes('wk-cell tabular">39<'), 'Week 39 of Oct 1 2023 must render');
+    assert(
+      el._rendered.includes('current-week') &&
+        el._rendered.includes('wk-cell tabular">43<') &&
+        el._rendered.includes('current-day-badge">23<'),
+      'Current week row must be inverted with week number 43 and double-inverted current day 23'
+    );
+
+    // Cache guard on subsequent hass updates
+    el.hass = { ...el.hass, states: {} };
+    await el.updateComplete;
+    await flushMicrotasks();
+    assert.equal(apiCalls.length, 2, 'Repeated hass updates within 5-minute cache must not refetch');
+
+    // Switch to 24h format, Sunday first day, hide week numbers, empty calendar list
+    el.setConfig({
+      type: 'custom:eink-month-calendar',
+      entities: ['calendar.single'],
+      first_day_of_week: 'sunday',
+      time_format: '24h',
+      show_week_numbers: false,
+      max_events: 1,
+      timezone: 'UTC'
+    });
+    el.hass = {
+      ...el.hass,
+      async callApi() {
+        apiCalls.push({ method: 'GET', apiPath: 'calendar.single' });
+        return [
+          { start: { date: '2023-10-23' }, end: { date: '2023-10-24' }, summary: 'Holiday' },
+          { start: { dateTime: '2023-10-23T15:00:00Z' }, end: { dateTime: '2023-10-23T16:00:00Z' }, summary: 'Late Meeting' }
+        ];
+      }
+    };
+    await el.updateComplete;
+    await flushMicrotasks();
+    await el.updateComplete;
+
+    assert(!el._rendered.includes('wk-header'), 'show_week_numbers: false must hide week column');
+    assert(el._rendered.includes('no-weeks'), 'show_week_numbers: false must apply no-weeks grid class');
+    assert(el._rendered.includes('All day') && el._rendered.includes('Holiday'), 'All-day event today must render localized All day');
+    assert(el._rendered.includes('+1') && el._rendered.includes('event'), 'Single remaining overflow must render +1 event');
+
+    // hass-action tap test
+    el._lastTemplate.values[5].call(el, {});
+    assert.equal(actions.length, 1, 'Tapping month calendar must dispatch hass-action');
+    assert.equal(actions[0].config.entity, 'calendar.single');
+    assert.deepEqual(actions[0].config.tap_action, { action: 'more-info' });
+
+    el.isConnected = false;
+    el.disconnectedCallback();
+  } finally {
+    globalThis.Date = RealDate;
+  }
+
+  console.log('✓ eink-month-calendar behavioral tests passed (month grid, week numbers, current week/day inversion, multi-calendar REST, overflow, 12h/24h, hass-action).');
 }
 
 console.log('✓ All verification checks passed!');

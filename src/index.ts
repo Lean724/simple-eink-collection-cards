@@ -4,6 +4,7 @@ import './cards/status-list-card';
 import './cards/alert-banner-card';
 import './cards/sparkline-bar-card';
 import './cards/schedule-agenda-card';
+import './cards/month-calendar-card';
 import './cards/time-card';
 import './cards/forecast-card';
 
@@ -42,6 +43,11 @@ const einkCards = [
     description: 'Chronological calendar agenda with bold times and 1px dividers.'
   },
   {
+    type: 'eink-month-calendar',
+    name: 'E-ink Month Calendar',
+    description: 'Full monthly calendar with week numbers, current week highlight, and today events.'
+  },
+  {
     type: 'eink-time',
     name: 'E-ink Clock & Date',
     description: 'Minute-synchronized digital clock with date formats and zero second ghosting.'
@@ -60,7 +66,7 @@ for (const card of einkCards) {
 }
 
 console.info(
-  `%c SIMPLE-EINK-COLLECTION-CARDS %c v1.0.2 `,
+  `%c SIMPLE-EINK-COLLECTION-CARDS %c v1.1.0-beta.1 `,
   'color: #ffffff; background: #000000; font-weight: 700; border: 1px solid #ffffff;',
   'color: #000000; background: #ffffff; font-weight: 700; border: 1px solid #000000;'
 );
