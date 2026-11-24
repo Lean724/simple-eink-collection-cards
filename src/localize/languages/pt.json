@@ -20,7 +20,10 @@
     "loading": "A carregar...",
     "no_events": "Sem eventos próximos",
     "no_data": "Sem dados disponíveis",
-    "not_configured": "Cartão não configurado. Por favor selecione uma entidade."
+    "not_configured": "Cartão não configurado. Por favor selecione uma entidade.",
+    "tap_action": "Ação ao tocar",
+    "double_tap_action": "Ação ao toque duplo",
+    "hold_action": "Ação ao manter pressionado"
   },
   "conditions": {
     "equals": "É igual a",
@@ -66,6 +69,19 @@
     "max_items": "Máximo de eventos a apresentar",
     "all_day": "Dia todo"
   },
+  "month_calendar": {
+    "name": "E-ink Calendário Mensal",
+    "description": "Vista mensal completa com números de semana, semana atual invertida e eventos de hoje.",
+    "entities": "Calendários",
+    "first_day_of_week": "Primeiro dia da semana",
+    "monday": "Segunda-feira",
+    "sunday": "Domingo",
+    "show_week_numbers": "Mostrar números de semana",
+    "max_events": "Eventos de hoje a mostrar",
+    "week_short": "Sem",
+    "more_events": "eventos",
+    "more_event": "evento"
+  },
   "time": {
     "name": "E-ink Relógio e Data",
     "description": "Relógio e-ink sincronizado ao minuto sem cintilação de segundos.",
@@ -82,8 +98,15 @@
   "forecast": {
     "name": "E-ink Meteorologia e Previsão",
     "description": "Estado do tempo, temperatura, previsão alargada e atributo adicional.",
+    "layout": "Orientação do layout",
+    "layout_horizontal": "Horizontal",
+    "layout_vertical": "Vertical",
+    "location": "Localização (opcional)",
+    "weather_header": "Meteorologia",
+    "today": "Hoje",
     "days_to_show": "Dias de previsão",
     "extra_attribute": "Métrica adicional",
+    "extra_none": "Nenhuma",
     "extra_humidity": "Humidade (%)",
     "extra_pressure": "Pressão atmosférica (hPa)",
     "extra_wind_speed": "Velocidade do vento",

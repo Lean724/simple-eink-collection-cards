@@ -1,6 +1,6 @@
 {
   "name": "simple-eink-collection-cards",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "High-contrast, zero-noise, battery-friendly Lovelace cards tailored for E-ink screens and E-paper displays in Home Assistant.",
   "main": "dist/simple-eink-collection-cards.js",
   "scripts": {

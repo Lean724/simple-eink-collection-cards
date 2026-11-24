@@ -36,9 +36,25 @@ export interface LovelaceCardConfig {
   [key: string]: any;
 }
 
+export interface ActionConfig {
+  action: 'more-info' | 'toggle' | 'navigate' | 'url' | 'call-service' | 'perform-action' | 'assist' | 'none';
+  entity?: string;
+  navigation_path?: string;
+  url_path?: string;
+  service?: string;
+  perform_action?: string;
+  service_data?: Record<string, any>;
+  data?: Record<string, any>;
+  target?: Record<string, any>;
+  confirmation?: boolean | { text?: string };
+}
+
 export interface EinkBaseConfig extends LovelaceCardConfig {
   title?: string;
   inverted?: boolean;
+  tap_action?: ActionConfig;
+  double_tap_action?: ActionConfig;
+  hold_action?: ActionConfig;
 }
 
 export interface HeroMetricCardConfig extends EinkBaseConfig {
@@ -117,6 +133,28 @@ export interface ForecastCardConfig extends EinkBaseConfig {
   days_to_show?: number;
   extra_attribute?: string;
   extra_attribute_label?: string;
+  layout?: 'horizontal' | 'vertical';
+  location?: string;
+}
+
+export interface MonthCalendarCardConfig extends EinkBaseConfig {
+  entities?: string[];
+  entity?: string;
+  first_day_of_week?: 'monday' | 'sunday';
+  time_format?: 'auto' | '24h' | '12h';
+  show_week_numbers?: boolean;
+  max_events?: number;
+  timezone?: string;
+}
+
+export type CalendarEventDate = string | { dateTime?: string; date?: string };
+
+export interface CalendarEventItem {
+  start?: CalendarEventDate;
+  end?: CalendarEventDate;
+  summary: string;
+  description?: string;
+  location?: string;
 }
 
 export interface ForecastItem {

@@ -20,7 +20,10 @@
     "loading": "Ładowanie...",
     "no_events": "Brak nadchodzących wydarzeń",
     "no_data": "Brak dostępnych danych",
-    "not_configured": "Karta nieskonfigurowana. Wybierz encję."
+    "not_configured": "Karta nieskonfigurowana. Wybierz encję.",
+    "tap_action": "Akcja dotknięcia",
+    "double_tap_action": "Akcja podwójnego dotknięcia",
+    "hold_action": "Akcja przytrzymania"
   },
   "conditions": {
     "equals": "Równe",
@@ -66,6 +69,19 @@
     "max_items": "Maksymalna liczba wydarzeń",
     "all_day": "Cały dzień"
   },
+  "month_calendar": {
+    "name": "E-ink Kalendarz miesięczny",
+    "description": "Pełny widok miesiąca z numerami tygodni, odwróconym bieżącym tygodniem i dzisiejszymi wydarzeniami.",
+    "entities": "Kalendarze",
+    "first_day_of_week": "Pierwszy dzień tygodnia",
+    "monday": "Poniedziałek",
+    "sunday": "Niedziela",
+    "show_week_numbers": "Pokaż numery tygodni",
+    "max_events": "Liczba dzisiejszych wydarzeń",
+    "week_short": "Tydz",
+    "more_events": "wydarzeń",
+    "more_event": "wydarzenie"
+  },
   "time": {
     "name": "E-ink Zegar i data",
     "description": "Zegar e-ink zsynchronizowany z minutą, bez smużenia sekund i z formatami daty.",
@@ -82,8 +98,15 @@
   "forecast": {
     "name": "E-ink Prognoza pogody",
     "description": "Stan pogody, temperatura, rozszerzona prognoza i dodatkowy wskaźnik.",
+    "layout": "Orientacja układu",
+    "layout_horizontal": "Pozioma",
+    "layout_vertical": "Pionowa",
+    "location": "Lokalizacja (opcjonalnie)",
+    "weather_header": "Pogoda",
+    "today": "Dzisiaj",
     "days_to_show": "Liczba dni w prognozie",
     "extra_attribute": "Dodatkowy wskaźnik",
+    "extra_none": "Brak",
     "extra_humidity": "Wilgotność (%)",
     "extra_pressure": "Ciśnienie atmosferyczne (hPa)",
     "extra_wind_speed": "Prędkość wiatru",

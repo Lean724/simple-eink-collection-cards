@@ -2,13 +2,17 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/default)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.2-green.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](package.json)
 
 A cohesive suite of **high-contrast, zero-noise, battery-friendly Lovelace cards** built specifically for **E-ink (E-paper)** screens in Home Assistant.
 
 Designed from the ground up to eliminate ghosting, avoid needless refreshes, and maximize legibility on reflective, non-backlit displays.
 
 ![Simple E-ink Collection Cards Preview](images/preview.png)
+
+### New in v1.1.0: Month Calendar & Vertical Weather
+
+![Month Calendar and Vertical Weather Preview](images/month-vertical-weather.png)
 
 ---
 
@@ -51,8 +55,9 @@ All cards natively support Home Assistant `<ha-icon>` icons (`mdi:*`). Because t
 | **Alert Banner** | `custom:eink-alert-banner` | Critical warnings (low battery, rain detected, network outage). Renders as a solid block only when triggered; takes **0px** height when clear. |
 | **Sparkline Bar** | `custom:eink-sparkline-bar` | Simplified 12h/24h historical trends rendered with discrete vertical bars or solid lines with zero antialiasing blur. |
 | **Schedule Agenda** | `custom:eink-schedule-agenda` | Calendar events and reminders in a compact chronological table with bold time on the left and title on the right. |
+| **Month Calendar** | `custom:eink-month-calendar` | Full monthly grid with week numbers, inverted current week, highlighted current day, and today's multi-calendar events. |
 | **Clock & Date** | `custom:eink-time` | Big digital clock with zero second ghosting, multi-language dates, and slots for up to 2 secondary sensor chips. |
-| **Weather Forecast** | `custom:eink-forecast` | Weather condition, current temperature, multi-day extended forecast, and a configurable extra slot (humidity, pressure, wind). |
+| **Weather Forecast** | `custom:eink-forecast` | Weather condition, current temperature, multi-day forecast (horizontal or vertical layout), and a configurable extra slot. |
 
 ---
 
@@ -64,10 +69,10 @@ Every card in the collection supports the `inverted` boolean parameter:
 * `inverted: true`: High-contrast pure white text, icons, and borders on a solid black background. Ideal for night dashboards or inverted displays.
 
 ### 2. 100% Visual UI Editor Support
-All 8 cards include a visual editor (`ha-form` / `ha-selector`). You can configure entities, attributes, custom names, units, icons, display formats, and layout options directly from the Home Assistant UI without writing manual YAML.
+All 9 cards include a visual editor (`ha-form` / `ha-selector`). You can configure entities, attributes, custom names, units, icons, display formats, actions (`tap_action`, `double_tap_action`, `hold_action` where supported), and layout options directly from the Home Assistant UI without writing manual YAML.
 
 ### 3. Built-in Multi-Language Support
-Card headers, options, date formats, weather conditions, and visual editor labels are translated into **8 languages**:
+Card headers, options, date formats, weather conditions, and visual editor labels are translated into **10 languages**:
 * 🇬🇧 **English** (`en`) — Default
 * 🇪🇸 **Español** (`es`)
 * 🇨🇳 **简体中文** (`zh-Hans`)
@@ -76,6 +81,8 @@ Card headers, options, date formats, weather conditions, and visual editor label
 * 🇫🇷 **Français** (`fr`)
 * 🇵🇹 **Português** (`pt`)
 * 🇷🇺 **Русский** (`ru`)
+* 🇵🇱 **Polski** (`pl`)
+* 🇳🇱 **Nederlands** (`nl`)
 
 Language is automatically detected from your Home Assistant profile.
 
@@ -161,7 +168,19 @@ entity: calendar.family
 max_items: 4
 ```
 
-### 7. E-ink Clock & Date
+### 7. E-ink Month Calendar
+```yaml
+type: custom:eink-month-calendar
+entities:
+  - calendar.family
+  - calendar.work
+first_day_of_week: monday # 'monday' or 'sunday'
+time_format: auto # 'auto', '24h', or '12h'
+show_week_numbers: true
+max_events: 2
+```
+
+### 8. E-ink Clock & Date
 ```yaml
 type: custom:eink-time
 time_format: 24h # or '12h'
@@ -171,13 +190,15 @@ entity_1: sensor.outdoor_temperature
 entity_2: sensor.tablet_battery_level
 ```
 
-### 8. E-ink Weather Forecast
+### 9. E-ink Weather Forecast
 ```yaml
 type: custom:eink-forecast
 title: WEATHER
 entity: weather.home
-days_to_show: 4
-extra_attribute: humidity # 'humidity', 'pressure', 'wind_speed', or 'precipitation'
+layout: vertical # 'horizontal' (default) or 'vertical'
+location: LONDON
+days_to_show: 3
+extra_attribute: none # 'none', 'humidity', 'pressure', 'wind_speed', or 'precipitation'
 ```
 
 ---
@@ -203,7 +224,7 @@ If the repository is not yet visible in your HACS catalog:
 4. Click **Add Resource**:
    * **URL:** `/local/simple-eink-collection-cards.js`
    * **Resource type:** `JavaScript Module`
-5. Refresh your browser or clear your cache. All 8 cards will now appear in your visual card picker.
+5. Refresh your browser or clear your cache. All 9 cards will now appear in your visual card picker.
 
 ---
 
